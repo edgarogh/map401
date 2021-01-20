@@ -25,7 +25,7 @@ exit(1); \
 
 /* macro facilitant l'itération sur des images */
 #define FOR_EACH_PIXEL(IMG, VAR_X, VAR_Y) \
-for (UINT VAR_Y = 0; VAR_Y < IMG.H; VAR_Y++) \
-for (UINT VAR_X = 0; VAR_X < IMG.L; VAR_X++)
+for (UINT VAR_Y = 1; VAR_Y <= IMG.H; VAR_Y++) \
+for (UINT VAR_X = 1; VAR_X <= IMG.L; VAR_X++)
 
 #endif

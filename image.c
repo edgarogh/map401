@@ -189,11 +189,10 @@ Image lire_fichier_image(char *nom_f) {
 void ecrire_image(Image I) {
     printf("%dx%d\n", I.L, I.H);
 
-	for (UINT y = 0; y < I.H; y++) {
-		for (UINT x = 0; x < I.L; x++) {
+	for (UINT y = 1; y <= I.H; y++) {
+		for (UINT x = 1; x <= I.L; x++) {
 			fputc((get_pixel_image(I, x, y) == BLANC) ? '#' : ' ', stdout);
 		}
         fputc('\n', stdout);
 	}
 }
-
