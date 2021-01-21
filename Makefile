@@ -81,7 +81,7 @@ test_image.o : test_image.c image.h
 ########################################################
 # regles explicites de creation des executables
 
-test_image : test_image.o image.o 
+test_image : test_image.o contour.o geom2d.o image.o liste_points.o
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Creation de l'executable "$@
@@ -94,4 +94,4 @@ clean:
 	rm -fR $(EXECUTABLES) *.o 
 
 run: test_image
-	./test_image caractere2.pbm
+	./test_image images/caractere2.pbm
