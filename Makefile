@@ -37,7 +37,7 @@ INCLUDEOPTS = -I$(INCDIR)
 COMPILOPTS = -g -Wall $(INCLUDEOPTS)
 
 # liste des executables
-EXECUTABLES = test_image
+EXECUTABLES = test_image test_geom2d
 
 
 #############################################################################
@@ -88,10 +88,17 @@ test_image : test_image.o image.o
 	@echo "---------------------------------------------"
 	$(CC) $^ $(LDOPTS) -o $@
 
+test_geom2d: test_geom2d.o geom2d.o
+	@echo ""
+	@echo "---------------------------------------------"
+	@echo "Creation de l'executable "$@
+	@echo "---------------------------------------------"
+	$(CC) $^ $(LDOPTS) -o $@
 
 # regle pour "nettoyer" le répertoire
 clean:
 	rm -fR $(EXECUTABLES) *.o 
 
-run: test_image
-	./test_image caractere2.pbm
+test: test_image test_geom2d
+	./test_geom2d
+	./test_image
