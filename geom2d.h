@@ -1,3 +1,6 @@
+#ifndef _GEOM2D_H_
+#define _GEOM2D_H_
+
 #include <stdbool.h>
 
 typedef struct Vecteur_ {
@@ -57,3 +60,5 @@ double norme(Vecteur v);
 
 
 bool egaux_vecteurs(Vecteur v1, Vecteur v2);
+
+#endif

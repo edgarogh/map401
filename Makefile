@@ -95,7 +95,7 @@ test_geom2d: test_geom2d.o geom2d.o
 	@echo "---------------------------------------------"
 	$(CC) $^ $(LDOPTS) -o $@
 
-test_contour: test_contour.o image.o contour.o liste_points.o geom2d.o
+test_contour: test_contour.o contour.o image.o geom2d.o
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Creation de l'executable "$@

@@ -1,11 +1,8 @@
-#include "liste_points.h"
+#include "geom2d.h"
 #include "image.h"
 
 
 typedef enum { Nord = 0, Est = 1, Sud = 2, Ouest = 3 } Orientation;
-
-
-typedef ListePoints Contour;
 
 
 /**
@@ -15,4 +12,4 @@ typedef ListePoints Contour;
  * @param I
  * @return
  */
-Contour contour(Image I);
+void contour(Image I);
