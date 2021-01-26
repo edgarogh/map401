@@ -1,3 +1,6 @@
+#ifndef _CONTOUR_H_
+#define _CONTOUR_H_
+
 #include "liste_points.h"
 #include "image.h"
 
@@ -16,3 +19,5 @@ typedef ListePoints Contour;
  * @return
  */
 Contour contour(Image I);
+
+#endif

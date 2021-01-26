@@ -1,3 +1,6 @@
+#ifndef _LISTE_POINTS_H_
+#define _LISTE_POINTS_H_
+
 #include "geom2d.h"
 
 
@@ -55,3 +58,5 @@ TableauPoints liste_points_to_tableau_points(ListePoints self);
 
 
 void tableau_points_supprimer(TableauPoints* self);
+
+#endif

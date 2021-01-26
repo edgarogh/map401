@@ -76,8 +76,21 @@ test_image.o : test_image.c image.h
 	@echo "Compilation du module test_image"
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
-		
-		
+
+contour.o: contour.c contour.h geom2d.h liste_points.h
+	@echo ""
+	@echo "---------------------------------------------"
+	@echo "Compilation du module contour"
+	@echo "---------------------------------------------"
+	$(CC) -c $(COMPILOPTS) $<
+
+liste_points.o: liste_points.c liste_points.h geom2d.h
+	@echo ""
+	@echo "---------------------------------------------"
+	@echo "Compilation du module liste_points"
+	@echo "---------------------------------------------"
+	$(CC) -c $(COMPILOPTS) $<
+
 ########################################################
 # regles explicites de creation des executables
 
