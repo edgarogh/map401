@@ -37,7 +37,7 @@ INCLUDEOPTS = -I$(INCDIR)
 COMPILOPTS = -g -Wall $(INCLUDEOPTS)
 
 # liste des executables
-EXECUTABLES = test_image test_geom2d test_contour
+EXECUTABLES = test_image test_geom2d test_contour contour_of
 
 
 #############################################################################
@@ -115,9 +115,19 @@ test_contour: test_contour.o image.o contour.o liste_points.o geom2d.o
 	@echo "---------------------------------------------"
 	$(CC) $^ $(LDOPTS) -o $@
 
+contour_of: contour_of.o image.o contour.o liste_points.o geom2d.o
+	@echo ""
+	@echo "---------------------------------------------"
+	@echo "Creation de l'executable "$@
+	@echo "---------------------------------------------"
+	$(CC) $^ $(LDOPTS) -o $@
+
 # regle pour "nettoyer" le répertoire
 clean:
-	rm -fR $(EXECUTABLES) *.o 
+	rm -fR $(EXECUTABLES) *.o images/*.pbm.contours
 
 test: test_image test_geom2d test_contour
 	./test_geom2d && ./test_image && ./test_contour
+
+contours: contour_of
+	ls -1 images/*.pbm | xargs -L1 ./contour_of

@@ -5,7 +5,7 @@
 
 Point contour_trouver_pixel_depart(Image I) {
     FOR_EACH_PIXEL(I, x, y) {
-        if (get_pixel_image(I, x, y) == NOIR && get_pixel_image(I, x, y + 1) == BLANC) {
+        if (get_pixel_image(I, x, y) == NOIR && get_pixel_image(I, x, y - 1) == BLANC) {
             return set_point(x, y);
         }
     }
@@ -75,7 +75,6 @@ Orientation contour_nouvelle_orientation(Image I, Point current_position, Orient
 
 Contour contour(Image I) {
     Point start = contour_trouver_pixel_depart(I);
-    printf("%f %f\n", start.x, start.y);
     // Coin haut-gauche du pixel
     start = add_point(start, set_point(-1, -1));
 
@@ -92,6 +91,7 @@ Contour contour(Image I) {
         current_orientation = contour_nouvelle_orientation(I, current_position, current_orientation);
 
         if ((current_position.x == start.x) && (current_position.y == start.y) && (current_orientation == Est)) {
+            liste_points_push(&acc, current_position);
             return acc;
         }
     }

@@ -3,7 +3,7 @@
 #include "image.h"
 
 int main() {
-    // Test des opérations génériques sur les listes de points
+    // === Test des opérations génériques sur les listes de points ===
 
     ListePointsNoeud n2 = { .value = { 0, 6 }, .next = NULL };
     ListePointsNoeud n1 = { .value = { 0, 4 }, .next = &n2 };
@@ -27,14 +27,14 @@ int main() {
 
     tableau_points_supprimer(&t);
 
-    // Test de l'extraction de contour
+    // === Test de l'extraction de contour ===
 
     Image I = lire_fichier_image("images/caractere2.pbm");
     Contour image_contour = contour(I);
     supprimer_image(&I);
 
     liste_points_ecrire(image_contour);
-    assert(image_contour.len == 40); // Le contour est-il bon ? On part du principe que oui si le nombre de points est celui attendu
+    assert(image_contour.len == 41); // Le contour est-il bon ? On part du principe que oui si le nombre de points est celui attendu
 
     liste_points_supprimer(&image_contour);
 
