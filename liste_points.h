@@ -30,6 +30,9 @@ typedef struct {
 ListePoints liste_points_new();
 
 
+void liste_points_supprimer(ListePoints* self);
+
+
 void liste_points_push(ListePoints* self, Point value);
 
 

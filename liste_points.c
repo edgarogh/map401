@@ -12,6 +12,20 @@ ListePoints liste_points_new() {
 }
 
 
+void liste_points_supprimer(ListePoints* self) {
+    ListePointsNoeud* noeud = self->first;
+
+    while (noeud) {
+        ListePointsNoeud* tmp = noeud->next;
+        free(noeud);
+        noeud = tmp;
+    }
+
+    self->first = self->last = NULL;
+    self->len = 0;
+}
+
+
 void liste_points_push(ListePoints* self, Point value) {
     ListePointsNoeud* new_node = malloc(sizeof(ListePointsNoeud));
     new_node->next = NULL;

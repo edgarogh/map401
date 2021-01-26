@@ -1,4 +1,6 @@
-/test_*
+/test_image
+/test_geom2d
+/test_contour
 
 .idea
 
