@@ -130,4 +130,4 @@ test: test_image test_geom2d test_contour
 	./test_geom2d && ./test_image && ./test_contour
 
 contours: contour_of
-	ls -1 images/*.pbm | xargs -L1 ./contour_of
+	ls -1 images/*.pbm | xargs -L1 ./contour_of > resultats-tache3-2.txt

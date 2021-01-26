@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
     FILE* contour_file = fopen(contour_file_name, "w");
     tableau_points_enregistrer(&c_tab, contour_file);
     fclose(contour_file);
-    printf("Contour %s enregistré avec succès !\n", contour_file_name);
+    printf("Contour %s enregistré à partir de %s: %d segments\n", contour_file_name, image_name, c_tab.len - 1);
 
     // Mémoire
     free(contour_file_name);
