@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "liste_points.h"
@@ -26,6 +27,13 @@ void liste_points_supprimer(ListePoints* self) {
 }
 
 
+void liste_points_concat(ListePoints* self, ListePoints other) {
+    self->len += other.len;
+    self->last->next = other.first;
+    self->last = other.last;
+}
+
+
 void liste_points_push(ListePoints* self, Point value) {
     ListePointsNoeud* new_node = malloc(sizeof(ListePointsNoeud));
     new_node->next = NULL;
@@ -51,4 +59,28 @@ void liste_points_ecrire(ListePoints l) {
         n = n->next;
     }
     printf("]\n");
+}
+
+
+TableauPoints liste_points_to_tableau_points(ListePoints self) {
+    TableauPoints t = { .len = self.len, .inner = malloc(self.len * sizeof(Point)) };
+
+    ListePointsNoeud* noeud = self.first;
+
+    for (int i = 0; i < t.len; i++) {
+        // Impossible que ça rate en temps normal, ça peut se produire si `self.len` est désynchronisé avec la longueur
+        // effective de la liste chaînée.
+        assert(noeud != NULL);
+
+        t.inner[i] = noeud->value;
+
+        noeud = noeud->next;
+    }
+
+    return t;
+}
+
+
+void tableau_points_supprimer(TableauPoints* self) {
+    free(self->inner);
 }

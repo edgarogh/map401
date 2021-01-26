@@ -33,7 +33,25 @@ ListePoints liste_points_new();
 void liste_points_supprimer(ListePoints* self);
 
 
+/**
+ * Concatène `other` en queue de `self`, modifiant `self`
+ */
+void liste_points_concat(ListePoints* self, ListePoints other);
+
+
 void liste_points_push(ListePoints* self, Point value);
 
 
 void liste_points_ecrire(ListePoints l);
+
+
+typedef struct {
+    unsigned int len;
+    Point* inner;
+} TableauPoints;
+
+
+TableauPoints liste_points_to_tableau_points(ListePoints self);
+
+
+void tableau_points_supprimer(TableauPoints* self);
