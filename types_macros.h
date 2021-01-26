@@ -8,11 +8,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* type booleen */
-typedef char bool;
-#define false 0
-#define true  1
-
 /* type entier positif */
 typedef unsigned int UINT;
 

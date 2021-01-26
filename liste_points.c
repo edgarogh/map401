@@ -36,5 +36,5 @@ void liste_points_ecrire(ListePoints l) {
         printf("  (%f, %f)\n", n->value.x, n->value.y);
         n = n->next;
     }
-    printf("]");
+    printf("]\n");
 }
