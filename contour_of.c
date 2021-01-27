@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
     FILE* contour_file = fopen(contour_file_name, "w");
     tableau_points_enregistrer(&c_tab, contour_file);
     fclose(contour_file);
-    printf("Contour %s enregistré à partir de %s: %d segments\n", contour_file_name, image_name, c_tab.len - 1);
+    printf("Contour %s enregistré à partir de %s (%dx%d): %d segments\n", contour_file_name, image_name, i.L, i.H, c_tab.len - 1);
 
     // Mémoire
 

@@ -1,12 +1,12 @@
-Contour images/caractere2.pbm.contours enregistré à partir de images/caractere2.pbm: 40 segments
-Contour images/chat.pbm.contours enregistré à partir de images/chat.pbm: 880 segments
-Contour images/coq.pbm.contours enregistré à partir de images/coq.pbm: 5386 segments
-Contour images/elephant.pbm.contours enregistré à partir de images/elephant.pbm: 5344 segments
-Contour images/gymnaste.pbm.contours enregistré à partir de images/gymnaste.pbm: 8784 segments
-Contour images/image_ex_poly.pbm.contours enregistré à partir de images/image_ex_poly.pbm: 18 segments
-Contour images/labyrinthe.pbm.contours enregistré à partir de images/labyrinthe.pbm: 44000 segments
-Contour images/lettreZ.pbm.contours enregistré à partir de images/lettreZ.pbm: 9396 segments
-Contour images/ligne.pbm.contours enregistré à partir de images/ligne.pbm: 10 segments
-Contour images/map401.pbm.contours enregistré à partir de images/map401.pbm: 8072 segments
-Contour images/test_contour_carreau.pbm.contours enregistré à partir de images/test_contour_carreau.pbm: 12 segments
-Contour images/tete.pbm.contours enregistré à partir de images/tete.pbm: 8136 segments
+Contour images/caractere2.pbm.contours enregistré à partir de images/caractere2.pbm (7x9): 40 segments
+Contour images/chat.pbm.contours enregistré à partir de images/chat.pbm (250x140): 880 segments
+Contour images/coq.pbm.contours enregistré à partir de images/coq.pbm (700x720): 5386 segments
+Contour images/elephant.pbm.contours enregistré à partir de images/elephant.pbm (800x700): 5344 segments
+Contour images/gymnaste.pbm.contours enregistré à partir de images/gymnaste.pbm (1056x1647): 8784 segments
+Contour images/image_ex_poly.pbm.contours enregistré à partir de images/image_ex_poly.pbm (4x4): 18 segments
+Contour images/labyrinthe.pbm.contours enregistré à partir de images/labyrinthe.pbm (221x201): 44000 segments
+Contour images/lettreZ.pbm.contours enregistré à partir de images/lettreZ.pbm (600x1029): 9396 segments
+Contour images/ligne.pbm.contours enregistré à partir de images/ligne.pbm (3x2): 10 segments
+Contour images/map401.pbm.contours enregistré à partir de images/map401.pbm (830x300): 8072 segments
+Contour images/test_contour_carreau.pbm.contours enregistré à partir de images/test_contour_carreau.pbm (5x5): 12 segments
+Contour images/tete.pbm.contours enregistré à partir de images/tete.pbm (1252x1252): 8136 segments
