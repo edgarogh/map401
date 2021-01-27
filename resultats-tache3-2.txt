@@ -1,5 +1,5 @@
 Contour images/caractere2.pbm.contours enregistré à partir de images/caractere2.pbm: 40 segments
-Contour images/chat.pbm.contours enregistré à partir de images/chat.pbm: 880 segments
+Contour images/chat.pbm.contours enregistré à partir de images/chat.pbm: 880 segments
 Contour images/coq.pbm.contours enregistré à partir de images/coq.pbm: 5386 segments
 Contour images/elephant.pbm.contours enregistré à partir de images/elephant.pbm: 5344 segments
 Contour images/gymnaste.pbm.contours enregistré à partir de images/gymnaste.pbm: 8784 segments
@@ -9,4 +9,4 @@ Contour images/lettreZ.pbm.contours enregistré à partir de images/lettreZ.pbm:
 Contour images/ligne.pbm.contours enregistré à partir de images/ligne.pbm: 10 segments
 Contour images/map401.pbm.contours enregistré à partir de images/map401.pbm: 8072 segments
 Contour images/test_contour_carreau.pbm.contours enregistré à partir de images/test_contour_carreau.pbm: 12 segments
-Contour images/tete.pbm.contours enregistré à partir de images/tete.pbm: 8136 segments
+Contour images/tete.pbm.contours enregistré à partir de images/tete.pbm: 8136 segments
