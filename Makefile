@@ -91,6 +91,13 @@ liste_points.o: liste_points.c liste_points.h geom2d.h
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
+sortie.o: sortie_eps.c sortie.h contour.h liste_points.h
+	@echo ""
+	@echo "---------------------------------------------"
+	@echo "Compilation du module sortie_eps"
+	@echo "---------------------------------------------"
+	$(CC) -c $(COMPILOPTS) $< -o $@
+
 ########################################################
 # regles explicites de creation des executables
 
@@ -115,7 +122,7 @@ test_contour: test_contour.o image.o contour.o liste_points.o geom2d.o
 	@echo "---------------------------------------------"
 	$(CC) $^ $(LDOPTS) -o $@
 
-contour_of: contour_of.o image.o contour.o liste_points.o geom2d.o
+contour_of: contour_of.o image.o contour.o liste_points.o geom2d.o sortie.o
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Creation de l'executable "$@

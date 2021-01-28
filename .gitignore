@@ -4,6 +4,7 @@
 /contour_of
 
 /images/*.pbm.contours
+#/images/*.pbm.eps
 
 .idea
 
