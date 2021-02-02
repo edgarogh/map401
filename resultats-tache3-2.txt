@@ -1,6 +1,7 @@
 Contour images/caractere2.pbm.contours enregistré à partir de images/caractere2.pbm (7x9): 40 segments
 Contour images/chat.pbm.contours enregistré à partir de images/chat.pbm (250x140): 880 segments
 Contour images/coq.pbm.contours enregistré à partir de images/coq.pbm (700x720): 5386 segments
+Contour images/diagonale.pbm.contours enregistré à partir de images/diagonale.pbm (2x2): 8 segments
 Contour images/elephant.pbm.contours enregistré à partir de images/elephant.pbm (800x700): 5344 segments
 Contour images/gymnaste.pbm.contours enregistré à partir de images/gymnaste.pbm (1056x1647): 8784 segments
 Contour images/image_ex_poly.pbm.contours enregistré à partir de images/image_ex_poly.pbm (4x4): 18 segments
