@@ -42,6 +42,8 @@ int main() {
 
     // === Test de l'extraction de contour sur des contours multiples ===
 
+    // image2_poly.pbm
+
     i = lire_fichier_image("images/image2_poly.pbm");
     m = contour_init_mask(i);
     Contour image_contour1 = contour(i, m);
@@ -61,7 +63,45 @@ int main() {
     liste_points_supprimer(&image_contour3);
     liste_points_supprimer(&image_contour_fin);
 
-    // (fin)
+    // cible
+
+    i = lire_fichier_image("images/cible.pbm");
+    m = contour_init_mask(i);
+    image_contour1 = contour(i, m);
+    image_contour2 = contour(i, m);
+    image_contour3 = contour(i, m);
+    Contour image_contour4 = contour(i, m);
+    image_contour_fin = contour(i, m);
+    supprimer_image(&m);
+    supprimer_image(&i);
+
+    assert(image_contour_fin.len == 0);
+    assert(image_contour1.len-1 + image_contour2.len-1 + image_contour3.len-1 + image_contour4.len-1 == 64);
+
+    liste_points_supprimer(&image_contour1);
+    liste_points_supprimer(&image_contour2);
+    liste_points_supprimer(&image_contour3);
+    liste_points_supprimer(&image_contour4);
+    liste_points_supprimer(&image_contour_fin);
+
+    // tetris
+
+    i = lire_fichier_image("images/tetris.pbm");
+    m = contour_init_mask(i);
+    image_contour1 = contour(i, m);
+    image_contour2 = contour(i, m);
+    image_contour_fin = contour(i, m);
+    supprimer_image(&m);
+    supprimer_image(&i);
+
+    assert(image_contour_fin.len == 0);
+    assert(image_contour1.len-1 + image_contour2.len-1 == 18);
+
+    liste_points_supprimer(&image_contour1);
+    liste_points_supprimer(&image_contour2);
+    liste_points_supprimer(&image_contour_fin);
+
+    // === (fin) ===
 
     printf("\e[32mtest_contour passé avec succès !\e[0m\n");
 }

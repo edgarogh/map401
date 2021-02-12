@@ -3,6 +3,7 @@
 1 contour de images/caractere2.pbm enregistré (7x9): 40 segments
 34 contours de images/Charlot.pbm enregistrés (412x1216): 9040 segments
 1 contour de images/chat.pbm enregistré (250x140): 880 segments
+4 contours de images/cible.pbm enregistrés (7x7): 64 segments
 1 contour de images/coq.pbm enregistré (700x720): 5386 segments
 4 contours de images/damier_4_5_1.pbm enregistrés (4x5): 40 segments
 815 contours de images/dessin-delius.pbm enregistrés (1600x994): 110928 segments
@@ -24,3 +25,4 @@
 38 contours de images/Pink_Panther.pbm enregistrés (1500x558): 32028 segments
 1 contour de images/test_contour_carreau.pbm enregistré (5x5): 12 segments
 1 contour de images/tete.pbm enregistré (1252x1252): 8136 segments
+2 contours de images/tetris.pbm enregistrés (4x4): 18 segments
