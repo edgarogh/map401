@@ -1,13 +1,26 @@
-Contour images/caractere2.pbm.contours enregistré à partir de images/caractere2.pbm (7x9): 40 segments
-Contour images/chat.pbm.contours enregistré à partir de images/chat.pbm (250x140): 880 segments
-Contour images/coq.pbm.contours enregistré à partir de images/coq.pbm (700x720): 5386 segments
-Contour images/diagonale.pbm.contours enregistré à partir de images/diagonale.pbm (2x2): 8 segments
-Contour images/elephant.pbm.contours enregistré à partir de images/elephant.pbm (800x700): 5344 segments
-Contour images/gymnaste.pbm.contours enregistré à partir de images/gymnaste.pbm (1056x1647): 8784 segments
-Contour images/image_ex_poly.pbm.contours enregistré à partir de images/image_ex_poly.pbm (4x4): 18 segments
-Contour images/labyrinthe.pbm.contours enregistré à partir de images/labyrinthe.pbm (221x201): 44000 segments
-Contour images/lettreZ.pbm.contours enregistré à partir de images/lettreZ.pbm (600x1029): 9396 segments
-Contour images/ligne.pbm.contours enregistré à partir de images/ligne.pbm (3x2): 10 segments
-Contour images/map401.pbm.contours enregistré à partir de images/map401.pbm (830x300): 8072 segments
-Contour images/test_contour_carreau.pbm.contours enregistré à partir de images/test_contour_carreau.pbm (5x5): 12 segments
-Contour images/tete.pbm.contours enregistré à partir de images/tete.pbm (1252x1252): 8136 segments
+96 contours de images/animaux.pbm enregistrés (828x1232): 34396 segments
+63 contours de images/Bugs_Bunny.pbm enregistrés (416x768): 13172 segments
+1 contour de images/caractere2.pbm enregistré (7x9): 40 segments
+34 contours de images/Charlot.pbm enregistrés (412x1216): 9040 segments
+1 contour de images/chat.pbm enregistré (250x140): 880 segments
+1 contour de images/coq.pbm enregistré (700x720): 5386 segments
+4 contours de images/damier_4_5_1.pbm enregistrés (4x5): 40 segments
+815 contours de images/dessin-delius.pbm enregistrés (1600x994): 110928 segments
+38 contours de images/deux-des.pbm enregistrés (595x536): 11124 segments
+1 contour de images/diagonale.pbm enregistré (2x2): 8 segments
+78 contours de images/Droopy_Wolf.pbm enregistrés (821x687): 17306 segments
+1 contour de images/elephant.pbm enregistré (800x700): 5344 segments
+40 contours de images/FranceRegions.pbm enregistrés (1200x1200): 29540 segments
+375 contours de images/gai-luron.pbm enregistrés (1112x1390): 87636 segments
+1 contour de images/gymnaste.pbm enregistré (1056x1647): 8784 segments
+2 contours de images/image1_poly.pbm enregistrés (4x3): 18 segments
+3 contours de images/image2_poly.pbm enregistrés (7x9): 56 segments
+1 contour de images/image_ex_poly.pbm enregistré (4x4): 18 segments
+1 contour de images/labyrinthe.pbm enregistré (221x201): 44000 segments
+1 contour de images/lettreZ.pbm enregistré (600x1029): 9396 segments
+1 contour de images/ligne.pbm enregistré (3x2): 10 segments
+1 contour de images/map401.pbm enregistré (830x300): 8072 segments
+140 contours de images/papillon2.pbm enregistrés (1122x417): 18212 segments
+38 contours de images/Pink_Panther.pbm enregistrés (1500x558): 32028 segments
+1 contour de images/test_contour_carreau.pbm enregistré (5x5): 12 segments
+1 contour de images/tete.pbm enregistré (1252x1252): 8136 segments

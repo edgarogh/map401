@@ -1,16 +1,19 @@
+#include <assert.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include "contour.h"
 #include "types_macros.h"
 
 
-Point contour_trouver_pixel_depart(Image I) {
+bool contour_trouver_pixel_noir(Image I, Point* mut_return) {
     FOR_EACH_PIXEL(I, x, y) {
         if (get_pixel_image(I, x, y) == NOIR && get_pixel_image(I, x, y - 1) == BLANC) {
-            return set_point(x, y);
+            *mut_return = set_point(x, y);
+            return true;
         }
     }
 
-    ERREUR_FATALE("Impossible de trouver un pixel de départ, l'image est-elle vide ?");
+    return false;
 }
 
 
@@ -73,26 +76,53 @@ Orientation contour_nouvelle_orientation(Image I, Point current_position, Orient
 }
 
 
-Contour contour(Image I) {
-    Point start = contour_trouver_pixel_depart(I);
-    // Coin haut-gauche du pixel
-    start = add_point(start, set_point(-1, -1));
+Mask contour_init_mask(Image I) {
+    Image mask = creer_image(I.L, I.H);
 
-    // Accumulateur pour le contour
-    ListePoints acc = liste_points_new();
-
-    Point current_position = start;
-    Orientation current_orientation = Est;
-
-    while (true) {
-        liste_points_push(&acc, current_position);
-
-        contour_avancer(&current_position, current_orientation);
-        current_orientation = contour_nouvelle_orientation(I, current_position, current_orientation);
-
-        if ((current_position.x == start.x) && (current_position.y == start.y) && (current_orientation == Est)) {
-            liste_points_push(&acc, current_position);
-            return acc;
+    FOR_EACH_PIXEL(mask, x, y) {
+        Pixel p;
+        if ((get_pixel_image(I, x, y) == NOIR) && (get_pixel_image(I, x, y - 1) == BLANC)) {
+            p = NOIR;
+        } else {
+            p = BLANC;
         }
+        set_pixel_image(mask, x, y, p);
+    }
+
+    return mask;
+}
+
+
+Contour contour(Image I, Mask mask) {
+    assert(I.L == mask.L && I.H == mask.H);
+
+    Point start;
+    if (contour_trouver_pixel_noir(mask, &start)) {
+        // Coin haut-gauche du pixel
+        start = add_point(start, set_point(-1, -1));
+
+        // Accumulateur pour le contour
+        ListePoints acc = liste_points_new();
+
+        Point current_position = start;
+        Orientation current_orientation = Est;
+
+        while (true) {
+            liste_points_push(&acc, current_position);
+
+            if (current_orientation == Est) {
+                set_pixel_image(mask, current_position.x + 1, current_position.y + 1, BLANC);
+            }
+            contour_avancer(&current_position, current_orientation);
+            current_orientation = contour_nouvelle_orientation(I, current_position, current_orientation);
+
+            if ((current_position.x == start.x) && (current_position.y == start.y) && (current_orientation == Est)) {
+                liste_points_push(&acc, current_position);
+                return acc;
+            }
+        }
+    } else {
+        // Contour vide = "pas de contour trouvé"
+        return liste_points_new();
     }
 }

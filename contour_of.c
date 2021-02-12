@@ -101,31 +101,82 @@ int main(int argc, char** argv) {
     }
 
     Image i = lire_fichier_image(image_name);
-    Contour c = contour(i);
-    TableauPoints c_tab = liste_points_to_tableau_points(c);
-    liste_points_supprimer(&c);
+    Mask mask = contour_init_mask(i);
 
     int image_name_len = strlen(image_name);
 
-    // Création du fichier de contour
+    // === Ouverture des fichiers ===
 
+    FILE *contour_file = NULL;
     if (f_contour) {
-        char* contour_file_name = concat_extension(image_name, image_name_len, CONTOURS_EXT); // Nom du fichier
-        FILE* contour_file = fopen(contour_file_name, "w");
-        tableau_points_enregistrer(&c_tab, contour_file);
-        fclose(contour_file);
-        printf("Contour %s enregistré à partir de %s (%dx%d): %d segments\n", contour_file_name, image_name, i.L, i.H, c_tab.len - 1);
+        char *contour_file_name = concat_extension(image_name, image_name_len, CONTOURS_EXT); // Nom du fichier
+        contour_file = fopen(contour_file_name, "w");
+        // J'"alloue" de l'espace au début du fichier, car j'aurais besoin d'y écrire le nombre de contours que je ne
+        // connaîtrait qu'à la fin (avec `rewind`). Si je ne fais pas ça, les `fprintf` suivant `rewind` vont écraser
+        // les caractères existants.
+        fprintf(contour_file, "            "); // un u32 fait 11 caractères max + les sauts de ligne
         free(contour_file_name);
     }
 
-    // Création du fichier PostScript avec le contour
+    // === Itération sur les contours ===
 
-    if (f_mode1) creer_eps(i, c_tab, image_name, image_name_len, MODE_STROKED);
-    if (f_mode2) creer_eps(i, c_tab, image_name, image_name_len, MODE_STROKED_POINTS);
-    if (f_mode3) creer_eps(i, c_tab, image_name, image_name_len, MODE_FILLED);
+    // Premier contour
+    Contour c = contour(i, mask);
+    if (c.len == 0) { // Rappel: un contour de taille zero signifie "pas de contour trouvé"
+        fprintf(stderr, "avertissement: aucun contour trouvé dans le fichier fourni\n");
+    }
 
-    // Mémoire
+    int segments = 0; // pour les statistiques affichées dans stdout
+    int contours = 0;
+    while (c.len != 0) {
+        contours++;
 
+        TableauPoints c_tab = liste_points_to_tableau_points(c);
+        liste_points_supprimer(&c);
+
+        segments += (c_tab.len - 1);
+
+        // Ajout du contour du fichier de contour
+        if (f_contour) {
+            tableau_points_enregistrer(&c_tab, contour_file);
+        }
+
+        // Pour le moment, seul le premier contour est géré pour la sortie EPS (à fixer dans le 5.2)
+        if (contours == 1) {
+            // Création du fichier PostScript avec le contour
+
+            if (f_mode1) creer_eps(i, c_tab, image_name, image_name_len, MODE_STROKED);
+            if (f_mode2) creer_eps(i, c_tab, image_name, image_name_len, MODE_STROKED_POINTS);
+            if (f_mode3) creer_eps(i, c_tab, image_name, image_name_len, MODE_FILLED);
+        }
+
+        tableau_points_supprimer(&c_tab);
+        c = contour(i, mask);
+    }
+
+    // === Ecriture du # de contours et de la BB maintenant qu'on connait tous les contours ===
+
+    if (contour_file) {
+        // On revient au début du fichier pour écrire le nombre de contours
+        rewind(contour_file);
+        fprintf(contour_file, "%d\n", contours);
+
+        fclose(contour_file);
+
+        char* pluriel = contours == 1 ? "" : "s";
+        printf("%d contour%s de %s enregistré%s (%dx%d): %d segments\n",
+               contours,
+               pluriel,
+               image_name,
+               pluriel,
+               i.L,
+               i.H,
+               segments
+               );
+    }
+
+    // === Libération des resources ===
+
+    supprimer_image(&mask);
     supprimer_image(&i);
-    tableau_points_supprimer(&c_tab);
 }

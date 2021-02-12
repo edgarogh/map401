@@ -87,8 +87,7 @@ void tableau_points_supprimer(TableauPoints* self) {
 
 
 void tableau_points_enregistrer(TableauPoints* self, FILE* f) {
-    fprintf(f, "1\n\n%d\n", self->len);
-
+    fprintf(f, "\n%d\n", self->len);
     for (int i = 0; i < self->len; i++) {
         Point p = self->inner[i];
         fprintf(f, " %f %f\n", p.x, p.y);
