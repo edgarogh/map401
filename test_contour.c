@@ -27,16 +27,41 @@ int main() {
 
     tableau_points_supprimer(&t);
 
-    // === Test de l'extraction de contour ===
+    // === Test de l'extraction de contour sur un contour unique ===
 
-    Image I = lire_fichier_image("images/caractere2.pbm");
-    Contour image_contour = contour(I);
-    supprimer_image(&I);
+    Image i = lire_fichier_image("images/caractere2.pbm");
+    Mask m = contour_init_mask(i);
+    Contour image_contour = contour(i, m);
+    supprimer_image(&m);
+    supprimer_image(&i);
 
     liste_points_ecrire(image_contour);
     assert(image_contour.len == 41); // Le contour est-il bon ? On part du principe que oui si le nombre de points est celui attendu
 
     liste_points_supprimer(&image_contour);
+
+    // === Test de l'extraction de contour sur des contours multiples ===
+
+    i = lire_fichier_image("images/image2_poly.pbm");
+    m = contour_init_mask(i);
+    Contour image_contour1 = contour(i, m);
+    Contour image_contour2 = contour(i, m);
+    Contour image_contour3 = contour(i, m);
+    Contour image_contour_fin = contour(i, m);
+    supprimer_image(&m);
+    supprimer_image(&i);
+
+    assert(image_contour_fin.len == 0); // Seulement 3 contours, le 4ème est "vide" = inexistant
+    assert(image_contour1.len == 23);
+    assert(image_contour2.len == 11);
+    assert(image_contour3.len == 25);
+
+    liste_points_supprimer(&image_contour1);
+    liste_points_supprimer(&image_contour2);
+    liste_points_supprimer(&image_contour3);
+    liste_points_supprimer(&image_contour_fin);
+
+    // (fin)
 
     printf("\e[32mtest_contour passé avec succès !\e[0m\n");
 }
