@@ -8,13 +8,36 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: make test
+        run: make test
+      - name: make clean
+        run: make clean
 
+  valgrind:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: install valgrind
+        run: sudo apt install valgrind
+      - run: make contour_of
+      - name: mem-test contour_of
+        run: valgrind --leak-check=full --error-exitcode=99 ./contour_of images/image2_poly.pbm -c -1 -2 -3
+
+  build:
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: make test
-      run: make test
     - name: make contours
       run: make contours
+    - name: make clean
+      run: make clean
+    - name: package
+      run: tar --exclude=.github --exclude=.gitignore --exclude=.git --exclude-from=.gitignore -zcvf map401-$GITHUB_SHA.tar *
+    - uses: actions/upload-artifact@v2
+      with:
+        name: map401-${{ github.sha }}.tar
+        path: map401-${{ github.sha }}.tar
