@@ -140,3 +140,4 @@ contours: contour_of
 	ls -1 images/*.pbm | xargs -L1 -I{} ./contour_of {} -c -3 > resultats-tache3-2.txt
 	./contour_of images/chat.pbm -1 -2
 	./contour_of images/image_ex_poly.pbm -1 -2
+	./contour_of images/image2_poly.pbm -1 -2

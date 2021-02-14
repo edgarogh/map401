@@ -52,10 +52,11 @@ int flag_invalide(char* f) {
 }
 
 
-void creer_eps(Image i, TableauPoints tab, char* image_name, unsigned int image_name_len, SortieMode mode) {
+FichierSortie creer_eps(Image i, char* image_name, unsigned int image_name_len, SortieMode mode) {
     char* ps_file_name = concat_extension(image_name, image_name_len, POSTSCRIPT_EXT[mode]); // Nom du fichier
-    sortie_ecrire_contour(ps_file_name, i.L, i.H, tab, mode);
+    FichierSortie fs = sortie_open(ps_file_name, i.L, i.H, mode);
     free(ps_file_name);
+    return fs;
 }
 
 
@@ -118,6 +119,13 @@ int main(int argc, char** argv) {
         free(contour_file_name);
     }
 
+    FichierSortie eps1_file;
+    if (f_mode1) eps1_file = creer_eps(i, image_name, image_name_len, MODE_STROKED);
+    FichierSortie eps2_file;
+    if (f_mode2) eps2_file = creer_eps(i, image_name, image_name_len, MODE_STROKED_POINTS);
+    FichierSortie eps3_file;
+    if (f_mode3) eps3_file = creer_eps(i, image_name, image_name_len, MODE_FILLED);
+
     // === Itération sur les contours ===
 
     // Premier contour
@@ -126,8 +134,8 @@ int main(int argc, char** argv) {
         fprintf(stderr, "avertissement: aucun contour trouvé dans le fichier fourni\n");
     }
 
-    int segments = 0; // pour les statistiques affichées dans stdout
-    int contours = 0;
+    unsigned int segments = 0; // pour les statistiques affichées dans stdout
+    unsigned int contours = 0;
     while (c.len != 0) {
         contours++;
 
@@ -141,14 +149,9 @@ int main(int argc, char** argv) {
             tableau_points_enregistrer(&c_tab, contour_file);
         }
 
-        // Pour le moment, seul le premier contour est géré pour la sortie EPS (à fixer dans le 5.2)
-        if (contours == 1) {
-            // Création du fichier PostScript avec le contour
-
-            if (f_mode1) creer_eps(i, c_tab, image_name, image_name_len, MODE_STROKED);
-            if (f_mode2) creer_eps(i, c_tab, image_name, image_name_len, MODE_STROKED_POINTS);
-            if (f_mode3) creer_eps(i, c_tab, image_name, image_name_len, MODE_FILLED);
-        }
+        if (f_mode1) sortie_ecrire_contour(eps1_file, c_tab);
+        if (f_mode2) sortie_ecrire_contour(eps2_file, c_tab);
+        if (f_mode3) sortie_ecrire_contour(eps3_file, c_tab);
 
         tableau_points_supprimer(&c_tab);
         c = contour(i, mask);
@@ -174,6 +177,10 @@ int main(int argc, char** argv) {
                segments
                );
     }
+
+    if (f_mode1) sortie_close(eps1_file);
+    if (f_mode2) sortie_close(eps2_file);
+    if (f_mode3) sortie_close(eps3_file);
 
     // === Libération des resources ===
 

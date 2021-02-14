@@ -10,6 +10,7 @@
 #ifndef _SORTIE_H_
 #define _SORTIE_H_
 
+#include <stdio.h>
 #include "contour.h"
 
 
@@ -24,8 +25,33 @@ typedef enum {
 
 
 /**
- * Ouvre un fichier de sortie au chemin donné pour une image de taille w x h, écrit dedans et le ferme.
+ * Stocke un fichier de sortie en cours de création. Contient suffisemment d'informations pour ne pas avoir à passer
+ * d'arguments redondants dans les appels à `sortie_ecrire_contours`.
  */
-void sortie_ecrire_contour(char* path, int w, int h, TableauPoints contour, SortieMode mode);
+typedef struct {
+    FILE* out;
+    SortieMode mode;
+    unsigned int h;
+} FichierSortie;
+
+
+/**
+ * Ouvre un fichier de sortie au chemin donné pour une image de taille w x h et écrit l'en-tête.
+ * Normalement, une structure crée avec cette fonction doit toujours être libérée/détruite avec `sortie_close`.
+ */
+FichierSortie sortie_open(char* path, int w, int h, SortieMode mode);
+
+
+/**
+ * Écrit un contour dans le fichier. Peut être apellé plusieurs fois jusqu'à la fermeture du fichier.
+ */
+void sortie_ecrire_contour(FichierSortie self, TableauPoints contour);
+
+
+/**
+ * Ferme un fichier précédemment ouvert
+ */
+void sortie_close(FichierSortie self);
+
 
 #endif
