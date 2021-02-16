@@ -2,7 +2,7 @@
 #include "sortie.h"
 
 
-FichierSortie sortie_open(char* path, int w, int h, SortieMode mode) {
+FichierSortie sortie_open(char* path, unsigned int w, unsigned int h, SortieMode mode) {
     FILE* out = fopen(path, "w");
 
     fprintf(out, "%%!PS-Adobe-3.0 EPSF-3.0\n");

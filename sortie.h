@@ -39,7 +39,7 @@ typedef struct {
  * Ouvre un fichier de sortie au chemin donné pour une image de taille w x h et écrit l'en-tête.
  * Normalement, une structure crée avec cette fonction doit toujours être libérée/détruite avec `sortie_close`.
  */
-FichierSortie sortie_open(char* path, int w, int h, SortieMode mode);
+FichierSortie sortie_open(char* path, unsigned int w, unsigned int h, SortieMode mode);
 
 
 /**

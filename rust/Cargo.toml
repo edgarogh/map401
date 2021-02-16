@@ -1,0 +1,19 @@
+[package]
+name = "map401-rs"
+version = "0.1.0-tache-5-2"
+edition = "2018"
+
+[[bin]]
+name = "contour_of"
+path = "src/contour_of.rs"
+
+[profile.release]
+lto = true
+panic = 'abort'
+opt-level = 'z'
+
+[dependencies]
+clap = { version = "3.0.0-beta.2", features = ["derive"] }
+
+[build-dependencies]
+cc = "1.0"

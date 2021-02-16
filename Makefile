@@ -28,16 +28,16 @@ INCDIR = .
 LIBDIR = .
 
 # options pour l'�dition des liens
-LDOPTS = -L$(LIBDIR) -lm
+LDOPTS = -L$(LIBDIR) -lm -static
 
 # options pour la recherche des fichiers .o et .h
 INCLUDEOPTS = -I$(INCDIR)
 
 # options de compilation
-COMPILOPTS = -g -Wall $(INCLUDEOPTS)
+COMPILOPTS = -g -O3 -Wall $(INCLUDEOPTS)
 
 # liste des executables
-EXECUTABLES = test_image test_geom2d test_contour contour_of
+EXECUTABLES = test_image test_geom2d test_contour contour_of contour_of_rs *_stripped
 
 
 #############################################################################
@@ -141,3 +141,19 @@ contours: contour_of
 	./contour_of images/chat.pbm -1 -2
 	./contour_of images/image_ex_poly.pbm -1 -2
 	./contour_of images/image2_poly.pbm -1 -2
+
+# Expérimentations Rust
+
+contour_of_rs: rust/target/release/contour_of
+	cd rust; cargo build --release
+	cp $< contour_of_rs
+
+%_stripped: %
+	strip $< -o $@
+
+.PHONY: rust_compare
+rust_compare: contour_of_stripped contour_of_rs_stripped
+	@echo - C --------------------------
+	@du -h contour_of_stripped
+	@echo - Rust -----------------------
+	@du -h contour_of_rs_stripped
