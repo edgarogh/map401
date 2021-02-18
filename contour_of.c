@@ -2,6 +2,7 @@
 #include <string.h>
 #include "contour.h"
 #include "image.h"
+#include "simplification.h"
 #include "sortie.h"
 
 
@@ -168,7 +169,10 @@ int main(int argc, char** argv) {
         liste_points_supprimer(&c);
 
         if (seuil_dp != .0) {
-            printf(" ~ Simplification Douglas-Peucker (seuil=%lf)\n", seuil_dp);
+            c = simplification_douglas_peucker(c_tab, 0, c_tab.len - 1, seuil_dp);
+            tableau_points_supprimer(&c_tab);
+            c_tab = liste_points_to_tableau_points(c);
+            liste_points_supprimer(&c);
         }
 
         segments += (c_tab.len - 1);

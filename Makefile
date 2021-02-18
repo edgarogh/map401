@@ -122,7 +122,7 @@ test_contour: test_contour.o image.o contour.o liste_points.o geom2d.o
 	@echo "---------------------------------------------"
 	$(CC) $^ $(LDOPTS) -o $@
 
-contour_of: contour_of.o image.o contour.o liste_points.o geom2d.o sortie.o
+contour_of: contour_of.o image.o contour.o liste_points.o geom2d.o sortie.o simplification.o
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Creation de l'executable "$@
