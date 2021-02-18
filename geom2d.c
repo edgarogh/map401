@@ -73,3 +73,23 @@ double norme(Vecteur v) {
 bool egaux_vecteurs(Vecteur v1, Vecteur v2) {
     return egaux_doubles(v1.x, v2.x) && egaux_doubles(v1.y, v2.y);
 }
+
+
+// Distance point-segment
+
+
+double distance_point_segment(Point a, Point b, Point p) {
+    if (egaux_points(a, b)) return distance(a, p);
+
+    Vecteur ab = vect_bipoint(a, b);
+    double lambda = produit_scalaire(vect_bipoint(a, p), ab) / produit_scalaire(ab, ab);
+
+    if (lambda < 0) {
+        return distance(a, p);
+    } else if (lambda > 1) {
+        return distance(b, p);
+    } else {
+        Point q = add_point(a, mul_reel_point(add_point(b, mul_reel_point(a, -1)), lambda));
+        return distance(q, p);
+    }
+}
