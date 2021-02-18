@@ -3,7 +3,7 @@
 #include "simplification.h"
 
 
-ListePoints simplification_douglas_peucker_(TableauPoints c, int i1, int i2, double seuil) {
+ListePoints simplification_douglas_peucker(TableauPoints c, int i1, int i2, double seuil) {
     double distance_max = 0;
     int index_distance_max = i1;
     for (int i = i1 + 1; i <= i2; i++) {
