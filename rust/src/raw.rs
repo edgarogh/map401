@@ -1,4 +1,4 @@
-use std::os::raw::{c_uint, c_char, c_void, c_double, c_int};
+use std::os::raw::{c_uint, c_char, c_double, c_int};
 use std::ffi::{CString, CStr, NulError};
 use std::num::NonZeroU32;
 use std::ptr::NonNull;
@@ -15,11 +15,18 @@ struct CFile([u8; 0]);
 #[repr(transparent)]
 pub struct CFileRef(NonNull<CFile>);
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[repr(C)]
+pub enum Pixel {
+    BLANC = 0,
+    NOIR = 1,
+}
+
 #[repr(C)]
 pub struct Image {
     width: c_uint,
     height: c_uint,
-    inner: *mut c_void,
+    inner: *mut Pixel,
 }
 
 #[repr(transparent)]
@@ -122,6 +129,14 @@ impl Drop for CFileRef {
 }
 
 impl Image {
+    pub fn from_raw_components(width: c_uint, height: c_uint, inner: *mut Pixel) -> Self {
+        Self {
+            width,
+            height,
+            inner,
+        }
+    }
+
     pub fn open(path: impl Into<Vec<u8>>) -> IoResult<Self> {
         let path = CString::new(path).map_err(|_| nul_io_error())?;
         Ok(unsafe { lire_fichier_image(path.as_ptr()) })
@@ -217,6 +232,11 @@ pub struct ContourExtractorOnTheFly<'a> {
     pub(self) mask: Mask,
 }
 
+/// By default, the contour extractor extracts contours "on the fly".
+/// However, because knowing the length of the contour iterator list is impossible before iterating
+/// over every contour, calling [ContourExtractor::len][ContourExtractor::len] will collect all the
+/// contours into a `Vec` and mutate the [ContourExtractor][ContourExtractor] in the `Precomputed`
+/// variant.
 pub enum ContourExtractor<'a> {
     OnTheFly(ContourExtractorOnTheFly<'a>),
     Precomputed(std::vec::IntoIter<Contour>),

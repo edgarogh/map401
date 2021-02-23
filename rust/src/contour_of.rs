@@ -1,8 +1,10 @@
 #![feature(array_map, try_trait)]
 
 mod raw;
+mod image;
 
-use raw::{Image, OutFile};
+use image::Image;
+use raw::{OutFile};
 use clap::Clap;
 use raw::{ContourExtractor, OutMode, write_contour, CFileRef};
 use std::ffi::CString;
@@ -68,7 +70,9 @@ fn main_result() -> Result<(), &'static str> {
     ]
         .map(|(enabled, mode)| Some(()).filter(|_| enabled).map(|_| (format!("{}{}", &args.image, mode.ext()), mode)));
 
-    let image = Image::open(args.image).map_err(|_| CONTAINS_NUL)?;
+    let mut image_rs = Image::read(std::fs::File::open(&args.image).unwrap());
+    dbg!(&image_rs);
+    let image = unsafe { image_rs.as_raw_image() };
 
     let eps_files = eps_files
         .map(|file| revert_opt_res(
@@ -85,7 +89,7 @@ fn main_result() -> Result<(), &'static str> {
         _ => return Err(CONTAINS_NUL),
     };
 
-    let mut contours = ContourExtractor::from(&image);
+    let mut contours = ContourExtractor::from(&*image);
 
     if let Some(contours_file) = &mut contours_file {
         contours_file.write(format!("{}\n\n", contours.len()));
