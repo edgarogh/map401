@@ -2,6 +2,7 @@
 
 mod raw;
 mod image;
+mod geom2d;
 
 use image::Image;
 use raw::{OutFile};
