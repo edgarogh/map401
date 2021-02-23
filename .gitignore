@@ -2,6 +2,7 @@
 /test_geom2d
 /test_contour
 /contour_of
+/contour_of_*
 
 /images/*.pbm.contours
 #/images/*.pbm.eps

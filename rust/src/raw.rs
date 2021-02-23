@@ -83,9 +83,6 @@ extern {
     fn fputs(str: *const c_char, self_: NonNull<CFile>) -> c_int;
     fn fclose(self_: NonNull<CFile>);
 
-    fn lire_fichier_image(path: *const c_char) -> Image;
-    fn supprimer_image(image: &mut Image);
-
     fn liste_points_to_tableau_points(self_: ContourLinked) -> ContourTab;
     // fn liste_points_supprimer(self_: &mut ContourLinked);
     // fn tableau_points_supprimer(self_: &mut ContourTab);
@@ -137,11 +134,6 @@ impl Image {
         }
     }
 
-    pub fn open(path: impl Into<Vec<u8>>) -> IoResult<Self> {
-        let path = CString::new(path).map_err(|_| nul_io_error())?;
-        Ok(unsafe { lire_fichier_image(path.as_ptr()) })
-    }
-
     pub fn width(&self) -> u32 {
         self.width
     }
@@ -153,7 +145,9 @@ impl Image {
 
 impl Drop for Image {
     fn drop(&mut self) {
-        unsafe { supprimer_image(self) };
+        unsafe {
+            Box::from_raw(self.inner); // *drop*
+        };
     }
 }
 
