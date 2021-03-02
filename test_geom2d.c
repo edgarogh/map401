@@ -25,5 +25,18 @@ int main() {
     assert(egaux_doubles(produit_scalaire(v1, v2), 4)); // produit_scalaire
     assert(egaux_doubles(norme(v1), sqrt(2))); // norme
 
+    // Distance point-segment
+
+    Point a = set_point(0, 0), b = set_point(2, 0);
+
+    assert(egaux_doubles(distance_point_segment(b, b, a), 2)); // segment de taille nulle
+
+    assert(egaux_doubles(distance_point_segment(a, b, set_point(1, 0)), 0)); // point sur le segment
+    assert(egaux_doubles(distance_point_segment(a, b, set_point(2, 0)), 0)); // point sur le segment
+    assert(egaux_doubles(distance_point_segment(a, b, set_point(-1, 0)), 1)); // point avant le segment, sur la gauche de a
+    assert(egaux_doubles(distance_point_segment(a, b, set_point(3, 1)), sqrt(2))); // point après le segment, au dessus à droite de b
+    assert(egaux_doubles(distance_point_segment(a, b, set_point(0, 0.5)), 0.5)); // point au "dessus" de a
+    assert(egaux_doubles(distance_point_segment(a, b, set_point(0.5, 1)), 1)); // point au "dessus" du milieu du segment
+
     printf("\e[32mtest_geom2d passé avec succès !\e[0m\n");
 }

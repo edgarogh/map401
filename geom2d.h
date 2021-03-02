@@ -61,4 +61,10 @@ double norme(Vecteur v);
 
 bool egaux_vecteurs(Vecteur v1, Vecteur v2);
 
+
+// Distance point-segment
+
+
+double distance_point_segment(Point segment_a, Point segment_b, Point p);
+
 #endif

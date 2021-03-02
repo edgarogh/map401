@@ -37,7 +37,7 @@ INCLUDEOPTS = -I$(INCDIR)
 COMPILOPTS = -g -Wall $(INCLUDEOPTS)
 
 # liste des executables
-EXECUTABLES = test_image test_geom2d test_contour contour_of
+EXECUTABLES = test_image test_geom2d test_contour contour_of distance_points
 
 
 #############################################################################
@@ -123,6 +123,13 @@ test_contour: test_contour.o image.o contour.o liste_points.o geom2d.o
 	$(CC) $^ $(LDOPTS) -o $@
 
 contour_of: contour_of.o image.o contour.o liste_points.o geom2d.o sortie.o
+	@echo ""
+	@echo "---------------------------------------------"
+	@echo "Creation de l'executable "$@
+	@echo "---------------------------------------------"
+	$(CC) $^ $(LDOPTS) -o $@
+
+distance_points: distance_points.c geom2d.o
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Creation de l'executable "$@
