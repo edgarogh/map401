@@ -1,0 +1,21 @@
+=== Simplifications d=1 ===
+3 contours de images/image_poly_tache6.pbm enregistrés (50x50): 68 segments
+313 contours de images/elephant-gotlib.pbm enregistrés (1350x2000): 13189 segments
+258 contours de images/goudyini-A.pbm enregistrés (1000x1000): 5335 segments
+543 contours de images/JoaquimHock-LesArbres.pbm enregistrés (1500x2100): 26572 segments
+59 contours de images/cheval.pbm enregistrés (2000x1500): 3157 segments
+140 contours de images/papillon2.pbm enregistrés (1122x417): 1913 segments
+=== Simplifications d=2 ===
+3 contours de images/image_poly_tache6.pbm enregistrés (50x50): 44 segments
+313 contours de images/elephant-gotlib.pbm enregistrés (1350x2000): 4281 segments
+258 contours de images/goudyini-A.pbm enregistrés (1000x1000): 2713 segments
+543 contours de images/JoaquimHock-LesArbres.pbm enregistrés (1500x2100): 13090 segments
+59 contours de images/cheval.pbm enregistrés (2000x1500): 1381 segments
+140 contours de images/papillon2.pbm enregistrés (1122x417): 1037 segments
+=== Avant simplification ===
+3 contours de images/image_poly_tache6.pbm enregistrés (50x50): 488 segments
+313 contours de images/elephant-gotlib.pbm enregistrés (1350x2000): 115564 segments
+258 contours de images/goudyini-A.pbm enregistrés (1000x1000): 73444 segments
+543 contours de images/JoaquimHock-LesArbres.pbm enregistrés (1500x2100): 231284 segments
+59 contours de images/cheval.pbm enregistrés (2000x1500): 32002 segments
+140 contours de images/papillon2.pbm enregistrés (1122x417): 18212 segments

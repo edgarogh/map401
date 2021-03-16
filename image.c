@@ -157,7 +157,8 @@ Image lire_fichier_image(char *nom_f) {
 	/* ouverture du fichier nom_f en lecture */
 	f = fopen(nom_f, "r");
 	if (f == (FILE *)NULL) {
-		ERREUR_FATALE("lire_fichier_image : ouverture du fichier impossible\n");
+	    fprintf(stderr, "lire_fichier_image : ouverture du fichier impossible: %s\n", nom_f);
+        exit(1);
 	}
 	
 	/* traitement de l'en-tete et arret en cas d'erreur */
