@@ -13,7 +13,17 @@ typedef struct Point_ {
 } Point;
 
 
-/*
+typedef struct Bezier2_ {
+    Point c0, c1, c2;
+} Bezier2;
+
+
+typedef struct Bezier3_ {
+    Point c0, c1, c2, c3;
+} Bezier3;
+
+
+/**
  * Renvoie `true` si `d1` et `d2` peuvent être considérés comme égaux en tenant compte de la précision approximative des
  * nombres flottants.
  */
@@ -66,5 +76,20 @@ bool egaux_vecteurs(Vecteur v1, Vecteur v2);
 
 
 double distance_point_segment(Point segment_a, Point segment_b, Point p);
+
+
+// Courbes de bezier
+
+
+Point bezier2_C(Bezier2* self, double t);
+
+
+Point bezier3_C(Bezier3* self, double t);
+
+
+/**
+ * Incrémente le degré d'une courbe de Bezier de degré 2
+ */
+Bezier3 bezier2_to_bezier3(Bezier2* self);
 
 #endif

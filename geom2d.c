@@ -93,3 +93,35 @@ double distance_point_segment(Point a, Point b, Point p) {
         return distance(q, p);
     }
 }
+
+
+// Courbes de bezier
+
+
+Point bezier2_C(Bezier2* self, double t) {
+    Point m0 = mul_reel_point(self->c0, pow(1 - t, 2));
+    Point m1 = mul_reel_point(self->c1, 2 * t * (1 - t));
+    Point m2 = mul_reel_point(self->c2, t * t);
+
+    return add_point(m0, add_point(m1, m2));
+}
+
+
+Point bezier3_C(Bezier3* self, double t) {
+    Point m0 = mul_reel_point(self->c0, pow(1 - t, 3));
+    Point m1 = mul_reel_point(self->c1, 3 * t * pow(1 - t, 2));
+    Point m2 = mul_reel_point(self->c2, 3 * t * t * (1 - t));
+    Point m3 = mul_reel_point(self->c3, t * t * t);
+
+    return add_point(m0, add_point(m1, add_point(m2, m3)));
+}
+
+
+Bezier3 bezier2_to_bezier3(Bezier2* self) {
+    return (Bezier3) {
+        self->c0,
+        mul_reel_point(add_point(self->c0, mul_reel_point(self->c1, 2)), 1/3),
+        mul_reel_point(add_point(self->c2, mul_reel_point(self->c1, 2)), 1/3),
+        self->c2,
+    };
+}
