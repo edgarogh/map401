@@ -33,7 +33,13 @@ Bezier2 approx_bezier2(Point *start, unsigned int len) {
 }
 
 
-ListePoints simplification_douglas_peucker(TableauPoints c, int i1, int i2, double seuil) {
+ListeBezier2 simplification_douglas_peucker_bezier2(TableauPoints c, int i1, int i2, double seuil) {
+    // TODO
+    exit(1);
+}
+
+
+ListePoint simplification_douglas_peucker(TableauPoints c, int i1, int i2, double seuil) {
     double distance_max = 0;
     int index_distance_max = i1;
     for (int i = i1 + 1; i <= i2; i++) {
@@ -44,25 +50,25 @@ ListePoints simplification_douglas_peucker(TableauPoints c, int i1, int i2, doub
         }
     }
 
-    ListePoints L;
+    ListePoint L;
     if (distance_max <= seuil) {
-        L = liste_points_new();
-        liste_points_push(&L, c.inner[i1]);
-        liste_points_push(&L, c.inner[i2]);
+        L = liste_point_new();
+        liste_point_push(&L, c.inner[i1]);
+        liste_point_push(&L, c.inner[i2]);
     } else {
         L = simplification_douglas_peucker(c, i1, index_distance_max, seuil);
-        ListePoints L2 = simplification_douglas_peucker(c, index_distance_max, i2, seuil);
+        ListePoint L2 = simplification_douglas_peucker(c, index_distance_max, i2, seuil);
 
         // Le dernier élément de L est le même que le premier élément de L2, on enlève donc le 1er élément de L2
         if (L2.first) {
-            ListePointsNoeud* first = L2.first;
-            ListePointsNoeud* second = first->next;
+            ListePointNoeud* first = L2.first;
+            ListePointNoeud* second = first->next;
             L2.first = second;
             free(first);
             L2.len--;
         }
 
-        liste_points_concat(&L, L2);
+        liste_point_concat(&L, L2);
     }
 
     return L;

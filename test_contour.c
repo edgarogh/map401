@@ -5,20 +5,20 @@
 int main() {
     // === Test des opérations génériques sur les listes de points ===
 
-    ListePointsNoeud n2 = { .value = { 0, 6 }, .next = NULL };
-    ListePointsNoeud n1 = { .value = { 0, 4 }, .next = &n2 };
-    ListePointsNoeud n0 = { .value = { 0, 2 }, .next = &n1 };
-    ListePoints c = { .len = 3, .first = &n0, .last = &n2 };
+    ListePointNoeud n2 = { .value = { 0, 6 }, .next = NULL };
+    ListePointNoeud n1 = { .value = { 0, 4 }, .next = &n2 };
+    ListePointNoeud n0 = { .value = { 0, 2 }, .next = &n1 };
+    ListePoint c = { .len = 3, .first = &n0, .last = &n2 };
 
-    ListePointsNoeud n3 = { .value = { 0, 8 }, .next = NULL };
-    ListePoints c2 = { .len = 1, .first = &n3, .last = &n3 };
+    ListePointNoeud n3 = { .value = { 0, 8 }, .next = NULL };
+    ListePoint c2 = { .len = 1, .first = &n3, .last = &n3 };
 
-    liste_points_concat(&c, c2);
+    liste_point_concat(&c, c2);
     assert(c.len == 4);
     assert(c.first == &n0);
     assert(c.last == &n3);
 
-    TableauPoints t = liste_points_to_tableau_points(c);
+    TableauPoints t = liste_point_to_tableau_points(c);
     assert(t.len == 4);
     assert(t.inner[0].y == n0.value.y);
     assert(t.inner[3].y == n3.value.y);
@@ -35,10 +35,10 @@ int main() {
     supprimer_image(&m);
     supprimer_image(&i);
 
-    liste_points_ecrire(image_contour);
+    liste_point_ecrire(image_contour);
     assert(image_contour.len == 41); // Le contour est-il bon ? On part du principe que oui si le nombre de points est celui attendu
 
-    liste_points_supprimer(&image_contour);
+    liste_point_supprimer(&image_contour);
 
     // === Test de l'extraction de contour sur des contours multiples ===
 
@@ -58,10 +58,10 @@ int main() {
     assert(image_contour2.len == 11);
     assert(image_contour3.len == 25);
 
-    liste_points_supprimer(&image_contour1);
-    liste_points_supprimer(&image_contour2);
-    liste_points_supprimer(&image_contour3);
-    liste_points_supprimer(&image_contour_fin);
+    liste_point_supprimer(&image_contour1);
+    liste_point_supprimer(&image_contour2);
+    liste_point_supprimer(&image_contour3);
+    liste_point_supprimer(&image_contour_fin);
 
     // cible
 
@@ -78,11 +78,11 @@ int main() {
     assert(image_contour_fin.len == 0);
     assert(image_contour1.len-1 + image_contour2.len-1 + image_contour3.len-1 + image_contour4.len-1 == 64);
 
-    liste_points_supprimer(&image_contour1);
-    liste_points_supprimer(&image_contour2);
-    liste_points_supprimer(&image_contour3);
-    liste_points_supprimer(&image_contour4);
-    liste_points_supprimer(&image_contour_fin);
+    liste_point_supprimer(&image_contour1);
+    liste_point_supprimer(&image_contour2);
+    liste_point_supprimer(&image_contour3);
+    liste_point_supprimer(&image_contour4);
+    liste_point_supprimer(&image_contour_fin);
 
     // tetris
 
@@ -97,9 +97,9 @@ int main() {
     assert(image_contour_fin.len == 0);
     assert(image_contour1.len-1 + image_contour2.len-1 == 18);
 
-    liste_points_supprimer(&image_contour1);
-    liste_points_supprimer(&image_contour2);
-    liste_points_supprimer(&image_contour_fin);
+    liste_point_supprimer(&image_contour1);
+    liste_point_supprimer(&image_contour2);
+    liste_point_supprimer(&image_contour_fin);
 
     // === (fin) ===
 

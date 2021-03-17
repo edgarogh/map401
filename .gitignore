@@ -3,9 +3,10 @@
 /test_contour
 /contour_of
 /distance_points
+/liste_*.h
+/liste_*.c
 
 /images/*.pbm.contours
-#/images/*.pbm.eps
 
 .idea
 

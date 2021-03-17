@@ -1,14 +1,14 @@
 #ifndef _CONTOUR_H_
 #define _CONTOUR_H_
 
-#include "liste_points.h"
+#include "tableau_points.h"
 #include "image.h"
 
 
 typedef enum { Nord = 0, Est = 1, Sud = 2, Ouest = 3 } Orientation;
 
 
-typedef ListePoints Contour;
+typedef ListePoint Contour;
 
 
 /**

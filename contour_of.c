@@ -165,14 +165,14 @@ int main(int argc, char** argv) {
     while (c.len != 0) {
         contours++;
 
-        TableauPoints c_tab = liste_points_to_tableau_points(c);
-        liste_points_supprimer(&c);
+        TableauPoints c_tab = liste_point_to_tableau_points(c);
+        liste_point_supprimer(&c);
 
         if (seuil_dp != .0) {
             c = simplification_douglas_peucker(c_tab, 0, c_tab.len - 1, seuil_dp);
             tableau_points_supprimer(&c_tab);
-            c_tab = liste_points_to_tableau_points(c);
-            liste_points_supprimer(&c);
+            c_tab = liste_point_to_tableau_points(c);
+            liste_point_supprimer(&c);
         }
 
         segments += (c_tab.len - 1);

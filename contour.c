@@ -102,13 +102,13 @@ Contour contour(Image I, Mask mask) {
         start = add_point(start, set_point(-1, -1));
 
         // Accumulateur pour le contour
-        ListePoints acc = liste_points_new();
+        ListePoint acc = liste_point_new();
 
         Point current_position = start;
         Orientation current_orientation = Est;
 
         while (true) {
-            liste_points_push(&acc, current_position);
+            liste_point_push(&acc, current_position);
 
             if (current_orientation == Est) {
                 set_pixel_image(mask, current_position.x + 1, current_position.y + 1, BLANC);
@@ -117,12 +117,12 @@ Contour contour(Image I, Mask mask) {
             current_orientation = contour_nouvelle_orientation(I, current_position, current_orientation);
 
             if ((current_position.x == start.x) && (current_position.y == start.y) && (current_orientation == Est)) {
-                liste_points_push(&acc, current_position);
+                liste_point_push(&acc, current_position);
                 return acc;
             }
         }
     } else {
         // Contour vide = "pas de contour trouvé"
-        return liste_points_new();
+        return liste_point_new();
     }
 }

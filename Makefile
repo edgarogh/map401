@@ -49,11 +49,21 @@ EXECUTABLES = test_image test_geom2d test_contour contour_of distance_points
 all : $(EXECUTABLES)
 
 ########################################################
+# listes génériques
+liste_%.c liste_%.h: listes/%.env listes/liste_.h listes/liste_.c Makefile
+	{ \
+	. $< ;\
+	replace="sed -e s/#INCLUDE_TEMPLATE/$${INCLUDE}/g -e s/_LISTE_TTTTT_H_/_LISTE_$${UP}_H_/g -e s/TTTTT/$${CAP}/g -e s/ttttt/$${LOW}/g" ;\
+	$$replace listes/liste_.h > liste_$*.h ;\
+	$$replace listes/liste_.c > liste_$*.c ;\
+	}
+
+########################################################
 # regle generique : 
 #  remplace les regles de compilation separee de la forme
 #	module.o : module.c module.h
 #		$(CC) -c $(COMPILOPTS) module.c
-%.o : %.c %.h
+%.o : %.c %.h liste_point.h liste_bezier2.h
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Compilation du module "$*
@@ -77,24 +87,38 @@ test_image.o : test_image.c image.h
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-contour.o: contour.c contour.h geom2d.h liste_points.h
+contour.o: contour.c contour.h geom2d.h liste_point.h tableau_points.h
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Compilation du module contour"
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-liste_points.o: liste_points.c liste_points.h geom2d.h
+liste_points.o: liste_points.c liste_point.h geom2d.h
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Compilation du module liste_points"
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-sortie.o: sortie_eps.c sortie.h contour.h liste_points.h
+tableau_points.o: tableau_points.c liste_point.h tableau_points.h geom2d.h
+	@echo ""
+	@echo "---------------------------------------------"
+	@echo "Compilation du module tableau_points"
+	@echo "---------------------------------------------"
+	$(CC) -c $(COMPILOPTS) $<
+
+sortie.o: sortie_eps.c sortie.h contour.h liste_point.h tableau_points.h
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Compilation du module sortie_eps"
+	@echo "---------------------------------------------"
+	$(CC) -c $(COMPILOPTS) $< -o $@
+
+simplification.o: simplification.c simplification.h tableau_points.h geom2d.h liste_point.h liste_bezier2.h
+	@echo ""
+	@echo "---------------------------------------------"
+	@echo "Compilation du module simplification"
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $< -o $@
 
@@ -115,14 +139,14 @@ test_geom2d: test_geom2d.o geom2d.o
 	@echo "---------------------------------------------"
 	$(CC) $^ $(LDOPTS) -o $@
 
-test_contour: test_contour.o image.o contour.o liste_points.o geom2d.o
+test_contour: test_contour.o image.o contour.o liste_point.o tableau_points.o geom2d.o
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Creation de l'executable "$@
 	@echo "---------------------------------------------"
 	$(CC) $^ $(LDOPTS) -o $@
 
-contour_of: contour_of.o image.o contour.o liste_points.o geom2d.o sortie.o simplification.o
+contour_of: contour_of.o image.o contour.o liste_point.o tableau_points.o geom2d.o sortie.o simplification.o
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Creation de l'executable "$@
@@ -138,7 +162,7 @@ distance_points: distance_points.c geom2d.o
 
 # regle pour "nettoyer" le répertoire
 clean:
-	rm -fR $(EXECUTABLES) *.o images/*.pbm.contours
+	rm -fR $(EXECUTABLES) *.o images/*.pbm.contours liste_*.c liste_*.h
 
 test: test_image test_geom2d test_contour
 	./test_geom2d && ./test_image && ./test_contour
