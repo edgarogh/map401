@@ -13,6 +13,8 @@
 # (une commande commancant par @ n'est pas affichee a l'ecran)
 #############################################################################
 
+# désactivation des règles implicites
+.SUFFIXES:
 
 #############################################################################
 # definition des variables locales
@@ -50,7 +52,7 @@ all : $(EXECUTABLES)
 
 ########################################################
 # listes génériques
-liste_%.c liste_%.h: listes/%.env listes/liste_.h listes/liste_.c Makefile
+liste_%.c liste_%.h: listes/%.env listes/liste_.h listes/liste_.c
 	{ \
 	. $< ;\
 	replace="sed -e s/#INCLUDE_TEMPLATE/$${INCLUDE}/g -e s/_LISTE_TTTTT_H_/_LISTE_$${UP}_H_/g -e s/TTTTT/$${CAP}/g -e s/ttttt/$${LOW}/g" ;\
@@ -63,7 +65,7 @@ liste_%.c liste_%.h: listes/%.env listes/liste_.h listes/liste_.c Makefile
 #  remplace les regles de compilation separee de la forme
 #	module.o : module.c module.h
 #		$(CC) -c $(COMPILOPTS) module.c
-%.o : %.c %.h liste_point.h liste_bezier2.h
+%.o : %.c $(wildcard %.h) liste_point.h liste_bezier2.h
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Compilation du module "$*
