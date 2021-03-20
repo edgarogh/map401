@@ -81,15 +81,27 @@ double distance_point_segment(Point segment_a, Point segment_b, Point p);
 // Courbes de bezier
 
 
+/**
+ * Calcule C(t) où C est une courbe de Bézier de degré 2 passée en premier paramètre
+ */
 Point bezier2_C(Bezier2* self, double t);
 
 
+/**
+ * Approxime une distance entre le point `self`(`t`) et le point `p`, où `self` est une courbe de Bézier de degré 2.
+ */
 double distance_point_bezier2(Bezier2* self, Point p, double t);
 
 
+/**
+ * Calcule C(t) où C est une courbe de Bézier de degré 3 passée en premier paramètre
+ */
 Point bezier3_C(Bezier3* self, double t);
 
 
+/**
+ * Approxime une distance entre le point `self`(`t`) et le point `p`, où `self` est une courbe de Bézier de degré 3.
+ */
 double distance_point_bezier3(Bezier3* self, Point p, double t);
 
 
@@ -99,6 +111,10 @@ double distance_point_bezier3(Bezier3* self, Point p, double t);
 Bezier3 bezier2_to_bezier3(Bezier2* self);
 
 
+/**
+ * Approxime la séquence de points start[0]..start[len-1] par une courbe de Bézier de degré 2 dont les points de
+ * contrôle extrêmes sont le début et la fin de la séquence.
+ */
 Bezier2 approx_bezier2(Point* start, unsigned int len);
 
 #endif
