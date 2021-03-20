@@ -85,6 +85,24 @@ int main() {
     assert(egaux_points(bezier2base.c1, bezier2.c1));
     assert(egaux_points(bezier2base.c2, bezier2.c2));
 
+    // n=9 (exemple du cours)
+    Point points2[] = {
+            { 0., 0. },
+            { 1., 0. },
+            { 1., 1. },
+            { 1., 2. },
+            { 2., 2. },
+            { 3., 2. },
+            { 3., 3. },
+            { 4., 3. },
+            { 5., 3. },
+    };
+    bezier2 = approx_bezier2(points2, 9);
+    // Je fais tout ça pour ne comparer que les 6 premiers chiffres significatifs
+    int xe5 = (1.547619 - bezier2.c1.x) * 100000;
+    int ye5 = (2.452381 - bezier2.c1.y) * 100000;
+    assert(xe5 == 0 && ye5 == 0);
+
     printf("\e[32mtest_geom2d:bezier passé avec succès !\e[0m\n");
 
     printf("\e[32mtest_geom2d:* passé avec succès !\e[0m\n");
