@@ -11,13 +11,15 @@ static const char* const AIDE = "\n"
               "    contour_of <image.pbm> [flags]\n"
               "\n"
               "FLAGS:\n"
-              "    === traitement préalable =======================================================\n"
+              "    === traitement préalable (0 ou 1 choix possible) ===============================\n"
               "    -d <d>    Simplifie le contour avec l'algo. de Douglas-Peucker pour un seuil <d>\n"
-              "    === sortie =====================================================================\n"
+              "    -b <d>    ↳ + simplification par Bezier quadratique\n"
+              "    -B <d>    ↳ + simplification par Bezier cubique\n"
+              "    === sortie (plusieurs choix possibles) =========================================\n"
               "    -c        Sort un fichier de contours <image.pbm>.contours\n"
               "    -1        Sort un fichier EPS <image.pbm>-mode1.eps dans le mode de rendu 1\n"
-              "    -2         …\n"
-              "    -3         …\n"
+              "    -2        \"                                                               2\n"
+              "    -3        \"                                                               3\n"
               "\n"
               "EXEMPLES:\n"
               "    contour_of images/coq.pbm -c -3\n"
@@ -77,6 +79,56 @@ char* pop_arg(int* argc, char*** argv) {
 }
 
 
+typedef enum {
+    DPNone = 0,
+    DPSegment = 1,
+    DPBezier2 = 2,
+    DPBezier3 = 3,
+} DP;
+
+
+/**
+ * Représente un contour; soit constitué de segments consécutifs, soit constitué de Bezier3 consécutives
+ */
+typedef struct {
+    DP tag;
+    union {
+        TableauPoints segment;
+        ListeBezier3 bezier3;
+    } val;
+} GenericContour;
+
+
+/**
+ * Renvoie vrai si le contour générique est constitué de segments (et donc pas de courbes de Bezier)
+ */
+bool generic_contour_is_segment(GenericContour* self) {
+    return self->tag <= DPSegment;
+}
+
+
+unsigned int generic_contour_len(GenericContour* self) {
+    if (generic_contour_is_segment(self)) {
+        return self->val.segment.len;
+    } else {
+        return self->val.bezier3.len;
+    }
+}
+
+
+/**
+ * Ecrit un contour générique dans un fichier EPS. Appelle une fonction du module `sortie` différente selon le type de
+ * contour.
+ */
+void generic_contour_ecrire(GenericContour* self, FichierSortie out) {
+    if (generic_contour_is_segment(self)) {
+        sortie_ecrire_contour(out, self->val.segment);
+    } else {
+        sortie_ecrire_contour_bezier(out, &self->val.bezier3);
+    }
+}
+
+
 // Point d'entrée de l'utilitaire "contour_of", qui à partir d'un fichier PBM, écrit un fichier de contour du même nom +
 // ".contours", et écrit des informations dans la console qui seront concaténées dans `resultats-tache2-3.txt`.
 int main(int argc, char** argv) {
@@ -90,6 +142,7 @@ int main(int argc, char** argv) {
 
     char* image_name = pop_arg(&argc, &argv);
     double seuil_dp = .0;
+    DP type_dp = DPNone;
     bool f_contour = false, f_mode1 = false, f_mode2 = false, f_mode3 = false; // flags
 
     // On itère sur les arguments restants
@@ -100,7 +153,14 @@ int main(int argc, char** argv) {
         }
 
         switch (arg[1]) {
+            case 'B':
+                type_dp++;
+                // cascade volontaire
+            case 'b':
+                type_dp++;
+                // cascade volontaire
             case 'd': {
+                type_dp++;
                 char* seuil_db_str = pop_arg(&argc, &argv);
                 char* end;
                 seuil_dp = strtod(seuil_db_str, &end);
@@ -125,6 +185,10 @@ int main(int argc, char** argv) {
             default:
                 return flag_invalide(arg);
         }
+    }
+
+    if (type_dp == DPBezier3) {
+        ERREUR_FATALE("Bezier3 non implémenté");
     }
 
     Image i = lire_fichier_image(image_name);
@@ -168,24 +232,66 @@ int main(int argc, char** argv) {
         TableauPoints c_tab = liste_point_to_tableau_points(c);
         liste_point_supprimer(&c);
 
-        if (seuil_dp != .0) {
-            c = simplification_douglas_peucker(c_tab, 0, c_tab.len - 1, seuil_dp);
-            tableau_points_supprimer(&c_tab);
-            c_tab = liste_point_to_tableau_points(c);
-            liste_point_supprimer(&c);
+        // c_tab, simplifié avec l'algo D.-P. ou tel quel (selon si une simplification est demandée ou non). Cette
+        // variable sert uniquement à générer le fichier de contour, elle n'est définie que si besoin.
+        //   - aucune simplification demandée: c_tab_dp = c_tab
+        //   - simplification simple par segment: c_tab_dp = *la version simplifiée*
+        //   - simplification par bezier: c_tab_dp = *indéfini* si le fichier de contour n'est pas demandé,
+        //     *simplification simple par segments* sinon
+        TableauPoints c_tab_dp = (TableauPoints) { .len = 0 };
+        // Contour générique. Il peut s'agir d'un `TableauPoints` OU d'une `ListeBezier3`
+        GenericContour generic_contour;
+        // Défini lorsqu'on utilise des courbes de Bezier uniquement, utilisé pour libérer la mémoire à la fin
+        ListeBezier3 cb = { .len = 0 };
+        switch (type_dp) {
+            case DPNone: {
+                generic_contour = (GenericContour) {
+                    .tag = DPSegment,
+                    .val = { .segment = c_tab },
+                };
+                c_tab_dp = c_tab;
+                break;
+            }
+            case DPSegment: {
+                c = simplification_douglas_peucker(c_tab, 0, c_tab.len - 1, seuil_dp);
+                c_tab_dp = liste_point_to_tableau_points(c);
+                generic_contour = (GenericContour) {
+                    .tag = DPSegment,
+                    .val = { .segment = c_tab_dp },
+                };
+                liste_point_supprimer(&c);
+                break;
+            }
+            case DPBezier2:
+            case DPBezier3: {
+                // TODO gérer Bezier3
+                cb = simplification_douglas_peucker_bezier2(c_tab, 0, c_tab.len - 1, seuil_dp);
+                generic_contour = (GenericContour) {
+                    .tag = DPBezier3,
+                    .val = { .bezier3 = cb },
+                };
+                if (contour_file) {
+                    c = simplification_douglas_peucker(c_tab, 0, c_tab.len - 1, seuil_dp);
+                    c_tab_dp = liste_point_to_tableau_points(c);
+                    liste_point_supprimer(&c);
+                }
+                break;
+            }
         }
-
-        segments += (c_tab.len - 1);
 
         // Ajout du contour du fichier de contour
         if (f_contour) {
-            tableau_points_enregistrer(&c_tab, contour_file);
+            tableau_points_enregistrer(&c_tab_dp, contour_file);
         }
 
-        if (f_mode1) sortie_ecrire_contour(eps1_file, c_tab);
-        if (f_mode2) sortie_ecrire_contour(eps2_file, c_tab);
-        if (f_mode3) sortie_ecrire_contour(eps3_file, c_tab);
+        if (f_mode1) generic_contour_ecrire(&generic_contour, eps1_file);
+        if (f_mode2) generic_contour_ecrire(&generic_contour, eps2_file);
+        if (f_mode3) generic_contour_ecrire(&generic_contour, eps3_file);
 
+        segments += (generic_contour_len(&generic_contour) - 1);
+
+        if (cb.len > 0) liste_bezier3_supprimer(&cb);
+        if (c_tab_dp.len > 0 && c_tab_dp.inner != c_tab.inner) tableau_points_supprimer(&c_tab_dp);
         tableau_points_supprimer(&c_tab);
         c = contour(i, mask);
     }

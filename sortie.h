@@ -12,6 +12,7 @@
 
 #include <stdio.h>
 #include "contour.h"
+#include "liste_bezier3.h"
 
 
 typedef enum {
@@ -43,15 +44,20 @@ FichierSortie sortie_open(char* path, int w, int h, SortieMode mode);
 
 
 /**
- * Écrit un contour dans le fichier. Peut être apellé plusieurs fois jusqu'à la fermeture du fichier.
+ * Écrit un contour de type segment dans le fichier. Peut être apellé plusieurs fois jusqu'à la fermeture du fichier.
  */
 void sortie_ecrire_contour(FichierSortie self, TableauPoints contour);
+
+
+/**
+ * Écrit un contour de type Bezier3 dans le fichier. Peut être apellé plusieurs fois jusqu'à la fermeture du fichier.
+ */
+void sortie_ecrire_contour_bezier(FichierSortie self, ListeBezier3* contour);
 
 
 /**
  * Ferme un fichier précédemment ouvert
  */
 void sortie_close(FichierSortie self);
-
 
 #endif

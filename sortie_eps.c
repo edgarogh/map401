@@ -49,6 +49,41 @@ void sortie_ecrire_contour(FichierSortie self, TableauPoints contour) {
     }
 }
 
+
+void sortie_ecrire_contour_bezier(FichierSortie self, ListeBezier3* contour) {
+    FILE* out = self.out;
+    SortieMode mode = self.mode;
+
+    Point p;
+    if (contour->len > 0) {
+        ListeBezier3Noeud* noeud = contour->first;
+
+        p = noeud->value.c0;
+        fprintf(out, "%f %f moveto\n", p.x, self.h - p.y);
+
+        while (noeud) {
+            Point c1 = noeud->value.c1, c2 = noeud->value.c2;
+            p = noeud->value.c3;
+            fprintf(out, "%f %f %f %f %f %f curveto\n", c1.x, self.h - c1.y, c2.x, self.h - c2.y, p.x, self.h - p.y);
+
+            noeud = noeud->next;
+        }
+
+        if (mode != MODE_FILLED) {
+            fprintf(out, "0.1 setlinewidth stroke\n");
+        }
+    }
+
+    if (mode == MODE_STROKED_POINTS) {
+        // On commence à 1, le premier point et le dernier points sont les mêmes
+        for (ListeBezier3Noeud* noeud = contour->first; noeud; noeud = noeud->next) {
+            Point p = noeud->value.c1;
+            fprintf(out, "%f %f circle\n", p.x, self.h - p.y);
+        }
+    }
+}
+
+
 void sortie_close(FichierSortie self) {
     FILE* out = self.out;
 
