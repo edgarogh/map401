@@ -84,12 +84,21 @@ double distance_point_segment(Point segment_a, Point segment_b, Point p);
 Point bezier2_C(Bezier2* self, double t);
 
 
+double distance_point_bezier2(Bezier2* self, Point p, double t);
+
+
 Point bezier3_C(Bezier3* self, double t);
+
+
+double distance_point_bezier3(Bezier3* self, Point p, double t);
 
 
 /**
  * Incrémente le degré d'une courbe de Bezier de degré 2
  */
 Bezier3 bezier2_to_bezier3(Bezier2* self);
+
+
+Bezier2 approx_bezier2(Point* start, unsigned int len);
 
 #endif

@@ -4,42 +4,7 @@
 #include "simplification.h"
 
 
-Bezier2 approx_bezier2(Point *start, unsigned int len) {
-    assert(len > 1);
-
-    Bezier2 curve = {
-            .c0 = start[0],
-            .c2 = start[1],
-    };
-
-    if (len == 2) {
-        curve.c1 = mul_reel_point(add_point(start[0], start[1]), .5);
-    } else {
-        int n = (int)len - 1;
-
-        Point sum = set_point(0, 0);
-
-        for (int i = 1; i < (n-1); i++) {
-            sum = add_point(sum, start[i]);
-        }
-
-        float alpha = 3*n / (n*n - 1);
-        float beta = (1 - 2*n) / (2 * (n + 1));
-
-        curve.c1 = add_point(mul_reel_point(sum, alpha), mul_reel_point(add_point(start[0], start[len-1]), beta));
-    }
-
-    return curve;
-}
-
-
-ListeBezier2 simplification_douglas_peucker_bezier2(TableauPoints c, int i1, int i2, double seuil) {
-    // TODO
-    exit(1);
-}
-
-
-ListePoint simplification_douglas_peucker(TableauPoints c, int i1, int i2, double seuil) {
+ListePoint simplification_douglas_peucker(TableauPoints c, unsigned int i1, unsigned int i2, double seuil) {
     double distance_max = 0;
     int index_distance_max = i1;
     for (int i = i1 + 1; i <= i2; i++) {

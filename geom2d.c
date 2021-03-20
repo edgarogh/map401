@@ -1,7 +1,8 @@
+#include <assert.h>
 #include <math.h>
 #include "geom2d.h"
 
-#define DOUBLE_EPSILON 0.0000000001
+#define DOUBLE_EPSILON 0.0000001
 
 
 bool egaux_doubles(double d1, double d2) {
@@ -107,6 +108,11 @@ Point bezier2_C(Bezier2* self, double t) {
 }
 
 
+double distance_point_bezier2(Bezier2* self, Point p, double t) {
+    return distance(bezier2_C(self, t), p);
+}
+
+
 Point bezier3_C(Bezier3* self, double t) {
     Point m0 = mul_reel_point(self->c0, pow(1 - t, 3));
     Point m1 = mul_reel_point(self->c1, 3 * t * pow(1 - t, 2));
@@ -117,11 +123,45 @@ Point bezier3_C(Bezier3* self, double t) {
 }
 
 
+double distance_point_bezier3(Bezier3* self, Point p, double t) {
+    return distance(bezier3_C(self, t), p);
+}
+
+
 Bezier3 bezier2_to_bezier3(Bezier2* self) {
     return (Bezier3) {
         self->c0,
-        mul_reel_point(add_point(self->c0, mul_reel_point(self->c1, 2)), 1/3),
-        mul_reel_point(add_point(self->c2, mul_reel_point(self->c1, 2)), 1/3),
+        mul_reel_point(add_point(self->c0, mul_reel_point(self->c1, 2)), 1./3.),
+        mul_reel_point(add_point(self->c2, mul_reel_point(self->c1, 2)), 1./3.),
         self->c2,
     };
+}
+
+
+Bezier2 approx_bezier2(Point *start, unsigned int len) {
+    assert(len > 1);
+
+    Bezier2 curve = {
+            .c0 = start[0],
+    };
+
+    if (len == 2) {
+        curve.c1 = mul_reel_point(add_point(start[0], start[1]), .5);
+        curve.c2 = start[1];
+    } else {
+        float n = len - 1;
+
+        Point sum = set_point(0, 0);
+        for (int i = 1; i < (len-1); i++) {
+            sum = add_point(sum, start[i]);
+        }
+
+        float alpha = (3. * n) / (n*n - 1.);
+        float beta = (1. - (2. * n)) / (2. * (n + 1.));
+
+        curve.c2 = start[len-1];
+        curve.c1 = add_point(mul_reel_point(sum, alpha), mul_reel_point(add_point(curve.c0, curve.c2), beta));
+    }
+
+    return curve;
 }

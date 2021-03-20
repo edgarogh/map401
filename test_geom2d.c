@@ -25,6 +25,8 @@ int main() {
     assert(egaux_doubles(produit_scalaire(v1, v2), 4)); // produit_scalaire
     assert(egaux_doubles(norme(v1), sqrt(2))); // norme
 
+    printf("\e[32mtest_geom2d:base passé avec succès !\e[0m\n");
+
     // Distance point-segment
 
     Point a = set_point(0, 0), b = set_point(2, 0);
@@ -38,5 +40,52 @@ int main() {
     assert(egaux_doubles(distance_point_segment(a, b, set_point(0, 0.5)), 0.5)); // point au "dessus" de a
     assert(egaux_doubles(distance_point_segment(a, b, set_point(0.5, 1)), 1)); // point au "dessus" du milieu du segment
 
-    printf("\e[32mtest_geom2d passé avec succès !\e[0m\n");
+    printf("\e[32mtest_geom2d:point_segment passé avec succès !\e[0m\n");
+
+    // Bezier
+
+    Bezier2 bezier2 = { .c0 = set_point(0, 0), .c1 = set_point(0, 2), .c2 = set_point(2, 2) };
+    assert(egaux_points(bezier2_C(&bezier2, 0), set_point(0, 0)));
+    assert(egaux_points(bezier2_C(&bezier2, 1), set_point(2, 2)));
+    assert(egaux_points(bezier2_C(&bezier2, .5), set_point(0.5, 1.5)));
+
+    Bezier3 bezier3 = { .c0 = { 0., 0. }, .c1 = { 1., -1. }, .c2 = { 2., 3. }, .c3 = { 3, 2 } };
+    assert(egaux_points(bezier3_C(&bezier3, 0), set_point(0, 0)));
+    assert(egaux_points(bezier3_C(&bezier3, 1), set_point(3, 2)));
+    assert(egaux_points(bezier3_C(&bezier3, .5), set_point(1.5, 1)));
+    assert(egaux_points(bezier3_C(&bezier3, .2), set_point(0.6, -0.08)));
+    assert(egaux_points(bezier3_C(&bezier3, .7), set_point(2.1, 1.82)));
+
+    Bezier3 bezier2to3 = bezier2_to_bezier3(&bezier2);
+    assert(egaux_points(bezier2to3.c0, bezier2.c0));
+    assert(egaux_points(bezier2to3.c3, bezier2.c2));
+    assert(egaux_points(bezier2to3.c1, set_point(0, 4./3.)));
+    assert(egaux_points(bezier2to3.c2, set_point(2./3., 2)));
+
+    // approx_bezier2
+
+    // n=1
+    bezier2 = approx_bezier2((Point[]) { set_point(0., 2.), set_point(2., 0.) }, 2);
+    assert(egaux_points(bezier2.c0, set_point(0., 2.)));
+    assert(egaux_points(bezier2.c1, set_point(1., 1.)));
+    assert(egaux_points(bezier2.c2, set_point(2., 0.)));
+
+    // n≥2
+    Bezier2 bezier2base = { .c0 = { 4.5, 6. }, .c1 = { -7., 0.2 }, .c2 = { 3., -3. } };
+    Point points[] = {
+            bezier2_C(&bezier2base, 0),
+            bezier2_C(&bezier2base, 0.25),
+            bezier2_C(&bezier2base, 0.5),
+            bezier2_C(&bezier2base, 0.75),
+            bezier2_C(&bezier2base, 1),
+    };
+    bezier2 = approx_bezier2(points, 5);
+    printf("(%f;%f)\n", bezier2.c1.x, bezier2.c1.y);
+    assert(egaux_points(bezier2base.c0, bezier2.c0));
+    assert(egaux_points(bezier2base.c1, bezier2.c1));
+    assert(egaux_points(bezier2base.c2, bezier2.c2));
+
+    printf("\e[32mtest_geom2d:bezier passé avec succès !\e[0m\n");
+
+    printf("\e[32mtest_geom2d:* passé avec succès !\e[0m\n");
 }
