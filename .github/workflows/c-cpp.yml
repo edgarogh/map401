@@ -24,8 +24,12 @@ jobs:
       - name: install valgrind
         run: sudo apt install valgrind
       - run: make contour_of
-      - name: mem-test contour_of
+      - name: mem-test contour_of (no simplification)
+        run: valgrind --leak-check=full --error-exitcode=99 ./contour_of images/image2_poly.pbm -c -1 -2 -3
+      - name: mem-test contour_of (douglas-peucker)
         run: valgrind --leak-check=full --error-exitcode=99 ./contour_of images/image2_poly.pbm -c -1 -2 -3 -d 10
+      - name: mem-test contour_of (douglas-peucker + bezier2)
+        run: valgrind --leak-check=full --error-exitcode=99 ./contour_of images/image2_poly.pbm -c -1 -2 -3 -b 10
 
   build:
     runs-on: ubuntu-latest
