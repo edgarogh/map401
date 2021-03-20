@@ -65,7 +65,7 @@ liste_%.c liste_%.h: listes/%.env listes/liste_.h listes/liste_.c
 #  remplace les regles de compilation separee de la forme
 #	module.o : module.c module.h
 #		$(CC) -c $(COMPILOPTS) module.c
-%.o : %.c $(wildcard %.h) liste_point.h liste_bezier2.h
+%.o : %.c $(wildcard %.h) liste_point.h liste_bezier3.h
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Compilation du module "$*
@@ -117,7 +117,7 @@ sortie.o: sortie_eps.c sortie.h contour.h liste_point.h tableau_points.h
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $< -o $@
 
-simplification.o: simplification.c simplification.h tableau_points.h geom2d.h liste_point.h liste_bezier2.h
+simplification.o: simplification.c simplification.h tableau_points.h geom2d.h liste_point.h liste_bezier3.h
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Compilation du module simplification"
@@ -148,7 +148,7 @@ test_contour: test_contour.o image.o contour.o liste_point.o tableau_points.o ge
 	@echo "---------------------------------------------"
 	$(CC) $^ $(LDOPTS) -o $@
 
-contour_of: contour_of.o image.o contour.o liste_point.o tableau_points.o geom2d.o sortie.o simplification.o
+contour_of: contour_of.o image.o contour.o liste_point.o liste_bezier3.o tableau_points.o geom2d.o sortie.o simplification.o
 	@echo ""
 	@echo "---------------------------------------------"
 	@echo "Creation de l'executable "$@
