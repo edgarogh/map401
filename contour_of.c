@@ -129,6 +129,15 @@ void generic_contour_ecrire(GenericContour* self, FichierSortie out) {
 }
 
 
+char* generic_contour_el_name(GenericContour* self) {
+    if (generic_contour_is_segment(self)) {
+        return "segments";
+    } else {
+        return "courbes de Bezier";
+    }
+}
+
+
 // Point d'entrée de l'utilitaire "contour_of", qui à partir d'un fichier PBM, écrit un fichier de contour du même nom +
 // ".contours", et écrit des informations dans la console qui seront concaténées dans `resultats-tache2-3.txt`.
 int main(int argc, char** argv) {
@@ -226,6 +235,7 @@ int main(int argc, char** argv) {
 
     unsigned int segments = 0; // pour les statistiques affichées dans stdout
     unsigned int contours = 0;
+    char* el_name = NULL; // "segments" ou "courbes de Bezier"
     while (c.len != 0) {
         contours++;
 
@@ -284,6 +294,10 @@ int main(int argc, char** argv) {
             tableau_points_enregistrer(&c_tab_dp, contour_file);
         }
 
+        if (!el_name) {
+            el_name = generic_contour_el_name(&generic_contour);
+        }
+
         if (f_mode1) generic_contour_ecrire(&generic_contour, eps1_file);
         if (f_mode2) generic_contour_ecrire(&generic_contour, eps2_file);
         if (f_mode3) generic_contour_ecrire(&generic_contour, eps3_file);
@@ -306,14 +320,15 @@ int main(int argc, char** argv) {
         fclose(contour_file);
 
         char* pluriel = contours == 1 ? "" : "s";
-        printf("%d contour%s de %s enregistré%s (%dx%d): %d segments\n",
+        printf("%d contour%s de %s enregistré%s (%dx%d): %d %s\n",
                contours,
                pluriel,
                image_name,
                pluriel,
                i.L,
                i.H,
-               segments
+               segments,
+               el_name
                );
     }
 
