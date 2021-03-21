@@ -2,6 +2,7 @@
 #include <string.h>
 #include "contour.h"
 #include "image.h"
+#include "simplification.h"
 #include "sortie.h"
 
 
@@ -10,10 +11,13 @@ static const char* const AIDE = "\n"
               "    contour_of <image.pbm> [flags]\n"
               "\n"
               "FLAGS:\n"
-              "    -c    Sort un fichier de contours <image.pbm>.contours\n"
-              "    -1    Sort un fichier EPS <image.pbm>-mode1.eps dans le mode de rendu 1\n"
-              "    -2     …\n"
-              "    -3     …\n"
+              "    === traitement préalable =======================================================\n"
+              "    -d <d>    Simplifie le contour avec l'algo. de Douglas-Peucker pour un seuil <d>\n"
+              "    === sortie =====================================================================\n"
+              "    -c        Sort un fichier de contours <image.pbm>.contours\n"
+              "    -1        Sort un fichier EPS <image.pbm>-mode1.eps dans le mode de rendu 1\n"
+              "    -2         …\n"
+              "    -3         …\n"
               "\n"
               "EXEMPLES:\n"
               "    contour_of images/coq.pbm -c -3\n"
@@ -60,6 +64,19 @@ FichierSortie creer_eps(Image i, char* image_name, unsigned int image_name_len, 
 }
 
 
+/**
+ * Enlève et retourne un argument de ligne de commande
+ */
+char* pop_arg(int* argc, char*** argv) {
+    if ((*argc)--) {
+        *argv = &(*argv)[1];
+        return (*argv)[0];
+    } else {
+        return NULL;
+    }
+}
+
+
 // Point d'entrée de l'utilitaire "contour_of", qui à partir d'un fichier PBM, écrit un fichier de contour du même nom +
 // ".contours", et écrit des informations dans la console qui seront concaténées dans `resultats-tache2-3.txt`.
 int main(int argc, char** argv) {
@@ -71,19 +88,28 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    char* image_name = argv[1];
+    char* image_name = pop_arg(&argc, &argv);
+    double seuil_dp = .0;
     bool f_contour = false, f_mode1 = false, f_mode2 = false, f_mode3 = false; // flags
 
     // On itère sur les arguments restants
-    argc--;
-    for (argv = &argv[2]; argc-- > 1; argv = &argv[1]) {
-        char* arg = argv[0];
-
+    char* arg;
+    while ((arg = pop_arg(&argc, &argv))) {
         if (arg[0] != '-' || arg[1] == 0 || arg[2] != '\0') {
             return flag_invalide(arg);
         }
 
         switch (arg[1]) {
+            case 'd': {
+                char* seuil_db_str = pop_arg(&argc, &argv);
+                char* end;
+                seuil_dp = strtod(seuil_db_str, &end);
+                if (seuil_db_str == end) {
+                    fprintf(stderr, "Le seuil n'a pas pu être décodé. Assurez vous de le spécifier sous la forme suivante: `… -d 12 …`\n");
+                    return 1;
+                }
+                break;
+            }
             case 'c':
                 f_contour = true;
                 break;
@@ -141,6 +167,13 @@ int main(int argc, char** argv) {
 
         TableauPoints c_tab = liste_points_to_tableau_points(c);
         liste_points_supprimer(&c);
+
+        if (seuil_dp != .0) {
+            c = simplification_douglas_peucker(c_tab, 0, c_tab.len - 1, seuil_dp);
+            tableau_points_supprimer(&c_tab);
+            c_tab = liste_points_to_tableau_points(c);
+            liste_points_supprimer(&c);
+        }
 
         segments += (c_tab.len - 1);
 
