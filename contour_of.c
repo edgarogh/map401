@@ -79,6 +79,25 @@ char* pop_arg(int* argc, char*** argv) {
 }
 
 
+/**
+ * Lis un seuil et l'affecte à `*seuil_dp` si il n'a pas déjà été affecté, fait échouer le programme sinon
+ */
+void pop_seuil(int* argc, char*** argv, double* seuil_dp) {
+    if (*seuil_dp == 0) {
+        char* seuil_db_str = pop_arg(argc, argv);
+        char* end;
+        *seuil_dp = strtod(seuil_db_str, &end);
+        if (seuil_db_str == end) {
+            fprintf(stderr, "Le seuil n'a pas pu être décodé. Assurez vous de le spécifier sous la forme suivante: `… -d 12 …`\n");
+            exit(1);
+        }
+    } else {
+        fprintf(stderr, "Seul un mode de simplification ne peut être utilisé à la fois\n");
+        exit(1);
+    }
+}
+
+
 typedef enum {
     DPNone = 0,
     DPSegment = 1,
@@ -163,22 +182,17 @@ int main(int argc, char** argv) {
 
         switch (arg[1]) {
             case 'B':
-                type_dp++;
-                // cascade volontaire
-            case 'b':
-                type_dp++;
-                // cascade volontaire
-            case 'd': {
-                type_dp++;
-                char* seuil_db_str = pop_arg(&argc, &argv);
-                char* end;
-                seuil_dp = strtod(seuil_db_str, &end);
-                if (seuil_db_str == end) {
-                    fprintf(stderr, "Le seuil n'a pas pu être décodé. Assurez vous de le spécifier sous la forme suivante: `… -d 12 …`\n");
-                    return 1;
-                }
+                pop_seuil(&argc, &argv, &seuil_dp);
+                type_dp = DPBezier3;
                 break;
-            }
+            case 'b':
+                pop_seuil(&argc, &argv, &seuil_dp);
+                type_dp = DPBezier2;
+                break;
+            case 'd':
+                pop_seuil(&argc, &argv, &seuil_dp);
+                type_dp = DPSegment;
+                break;
             case 'c':
                 f_contour = true;
                 break;
