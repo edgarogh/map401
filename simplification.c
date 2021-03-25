@@ -37,6 +37,39 @@ ListeBezier3 simplification_douglas_peucker_bezier2(TableauPoints c, unsigned in
 }
 
 
+ListeBezier3 simplification_douglas_peucker_bezier3(TableauPoints c, unsigned int i1, unsigned int i2, double seuil) {
+    assert(i1 < i2);
+
+    unsigned int n = i2 - i1;
+    unsigned int np1 = n + 1;
+    Bezier3 bezier = approx_bezier3(&c.inner[i1], np1);
+
+    double distance_max = 0;
+    int index_distance_max = i1;
+    for (int i = i1 + 1; i <= i2; i++) {
+        int j = i - i1;
+        double distance = distance_point_bezier3(&bezier, c.inner[i], (float) j / (float) n);
+        if (distance_max < distance) {
+            distance_max = distance;
+            index_distance_max = i;
+        }
+    }
+
+    ListeBezier3 L;
+    if (distance_max <= seuil) {
+        L = liste_bezier3_new();
+        liste_bezier3_push(&L, bezier);
+    } else {
+        L = simplification_douglas_peucker_bezier3(c, i1, index_distance_max, seuil);
+        ListeBezier3 L2 = simplification_douglas_peucker_bezier3(c, index_distance_max, i2, seuil);
+
+        liste_bezier3_concat(&L, L2);
+    }
+
+    return L;
+}
+
+
 ListePoint simplification_douglas_peucker(TableauPoints c, unsigned int i1, unsigned int i2, double seuil) {
     double distance_max = 0;
     int index_distance_max = i1;

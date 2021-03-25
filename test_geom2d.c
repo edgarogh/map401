@@ -80,7 +80,6 @@ int main() {
             bezier2_C(&bezier2base, 1),
     };
     bezier2 = approx_bezier2(points, 5);
-    printf("(%f;%f)\n", bezier2.c1.x, bezier2.c1.y);
     assert(egaux_points(bezier2base.c0, bezier2.c0));
     assert(egaux_points(bezier2base.c1, bezier2.c1));
     assert(egaux_points(bezier2base.c2, bezier2.c2));
@@ -102,6 +101,16 @@ int main() {
     int xe5 = (1.547619 - bezier2.c1.x) * 100000;
     int ye5 = (2.452381 - bezier2.c1.y) * 100000;
     assert(xe5 == 0 && ye5 == 0);
+
+    // approx_bezier3
+
+    // n=9 (exemple du cours)
+    bezier3 = approx_bezier3(points2, 9);
+    int x1e5 = (1.737287 - bezier3.c1.x) * 100000;
+    int y1e5 = (0.929380 - bezier3.c1.y) * 100000;
+    int x2e5 = (1.844176 - bezier3.c2.x) * 100000;
+    int y2e5 = (3.489158 - bezier3.c2.y) * 100000;
+    assert(x1e5 == 0 && y1e5 == 0 && x2e5 == 0 && y2e5 == 0);
 
     printf("\e[32mtest_geom2d:bezier passé avec succès !\e[0m\n");
 

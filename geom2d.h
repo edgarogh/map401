@@ -117,4 +117,11 @@ Bezier3 bezier2_to_bezier3(Bezier2* self);
  */
 Bezier2 approx_bezier2(Point* start, unsigned int len);
 
+
+/**
+ * Approxime la séquence de points start[0]..start[len-1] par une courbe de Bézier de degré 3 dont les points de
+ * contrôle extrêmes sont le début et la fin de la séquence.
+ */
+Bezier3 approx_bezier3(Point* start, unsigned int len);
+
 #endif

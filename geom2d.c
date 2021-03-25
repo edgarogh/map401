@@ -149,19 +149,61 @@ Bezier2 approx_bezier2(Point *start, unsigned int len) {
         curve.c1 = mul_reel_point(add_point(start[0], start[1]), .5);
         curve.c2 = start[1];
     } else {
-        float n = len - 1;
+        double n = len - 1;
 
         Point sum = set_point(0, 0);
         for (int i = 1; i < (len-1); i++) {
             sum = add_point(sum, start[i]);
         }
 
-        float alpha = (3. * n) / (n*n - 1.);
-        float beta = (1. - (2. * n)) / (2. * (n + 1.));
+        double alpha = (3. * n) / (n*n - 1.);
+        double beta = (1. - (2. * n)) / (2. * (n + 1.));
 
         curve.c2 = start[len-1];
         curve.c1 = add_point(mul_reel_point(sum, alpha), mul_reel_point(add_point(curve.c0, curve.c2), beta));
     }
 
     return curve;
+}
+
+
+double approx_bezier3_gamma(double k, double n) {
+    return (6. * pow(k, 4.)) - (8. * n * pow(k, 3.)) + (6. * k * k) - (4. * n * k) + pow(n, 4.) - (n * n);
+}
+
+
+Bezier3 approx_bezier3(Point* start, unsigned int len) {
+    assert(len > 1);
+
+    if (len <= 3) {
+        Bezier2 b2 = approx_bezier2(start, len);
+        return bezier2_to_bezier3(&b2);
+    } else {
+        Bezier3 curve = {
+                .c0 = start[0],
+                .c3 = start[len-1],
+        };
+
+        double n = len - 1;
+
+        Point sum1 = set_point(0, 0);
+        for (int i = 1; i < (len-1); i++) {
+            sum1 = add_point(sum1, mul_reel_point(start[i], approx_bezier3_gamma(i, n)));
+        }
+
+        Point sum2 = set_point(0, 0);
+        for (int i = 1; i < (len-1); i++) {
+            sum2 = add_point(sum2, mul_reel_point(start[i], approx_bezier3_gamma(n - (double) i, n)));
+        }
+
+        double d = 3. * (n + 2.) * (3. * n * n + 1.);
+        double alpha = ((-15. * n * n * n) + (5. * n * n) + (2. * n) + 4.) / d;
+        double beta = ((10. * n * n * n) - (15. * n * n) + n + 2.) / d;
+        double lambda = (70. * n) / (3. * (n * n - 1.) * (n * n - 4.) * (3. * n * n + 1.));
+
+        curve.c1 = add_point(mul_reel_point(curve.c0, alpha), add_point(mul_reel_point(sum1, lambda), mul_reel_point(curve.c3, beta)));
+        curve.c2 = add_point(mul_reel_point(curve.c0, beta), add_point(mul_reel_point(sum2, lambda), mul_reel_point(curve.c3, alpha)));
+
+        return curve;
+    }
 }

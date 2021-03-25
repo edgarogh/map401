@@ -210,10 +210,6 @@ int main(int argc, char** argv) {
         }
     }
 
-    if (type_dp == DPBezier3) {
-        ERREUR_FATALE("Bezier3 non implémenté");
-    }
-
     Image i = lire_fichier_image(image_name);
     Mask mask = contour_init_mask(i);
 
@@ -288,8 +284,11 @@ int main(int argc, char** argv) {
             }
             case DPBezier2:
             case DPBezier3: {
-                // TODO gérer Bezier3
-                cb = simplification_douglas_peucker_bezier2(c_tab, 0, c_tab.len - 1, seuil_dp);
+                if (type_dp == DPBezier2) {
+                    cb = simplification_douglas_peucker_bezier2(c_tab, 0, c_tab.len - 1, seuil_dp);
+                } else {
+                    cb = simplification_douglas_peucker_bezier3(c_tab, 0, c_tab.len - 1, seuil_dp);
+                }
                 generic_contour = (GenericContour) {
                     .tag = DPBezier3,
                     .val = { .bezier3 = cb },
