@@ -104,6 +104,48 @@ int main() {
 
     // approx_bezier3
 
+    // n=1
+    {
+        Point p0 = set_point(4., 7.); // Complètement arbitraire
+        Point p1 = set_point(10., 27.); //  "
+        Point points[] = { p0, p1 };
+        Bezier3 bezier3 = approx_bezier3(points, 2);
+        assert(egaux_points(bezier3.c0, p0));
+        assert(egaux_points(bezier3.c1, mul_reel_point(add_point(mul_reel_point(p0, 2.), p1), 1. / 3.)));
+        assert(egaux_points(bezier3.c2, mul_reel_point(add_point(mul_reel_point(p1, 2.), p0), 1. / 3.)));
+        assert(egaux_points(bezier3.c3, p1));
+    }
+
+    // n=2
+    {
+        Point p0 = set_point(4., 7.); // Complètement arbitraire
+        Point p1 = set_point(10., 27.); //  "
+        Point p2 = set_point(-6., 28.5); //  "
+        Point points[] = { p0, p1, p2 };
+        Bezier3 bezier3 = approx_bezier3(points, 3);
+        assert(egaux_points(bezier3.c0, p0));
+        assert(egaux_points(bezier3.c1, mul_reel_point(add_point(mul_reel_point(p1, -4.), p2), 1. / -3.)));
+        assert(egaux_points(bezier3.c2, mul_reel_point(add_point(mul_reel_point(p1, -4.), p0), 1. / -3.)));
+        assert(egaux_points(bezier3.c3, p2));
+    }
+
+    // n≥3
+    {
+        Bezier3 bezier3base = { .c0 = { 12., -8. }, .c1 = { 0., .6 }, .c2 = { -1., -1. }, .c3 = { 12.5, 4. } };
+        Point points[] = {
+                bezier3_C(&bezier3base, 0),
+                bezier3_C(&bezier3base, 0.25),
+                bezier3_C(&bezier3base, 0.5),
+                bezier3_C(&bezier3base, 0.75),
+                bezier3_C(&bezier3base, 1),
+        };
+        Bezier3 bezier3 = approx_bezier3(points, 5);
+        assert(egaux_points(bezier3base.c0, bezier3.c0));
+        assert(egaux_points(bezier3base.c1, bezier3.c1));
+        assert(egaux_points(bezier3base.c2, bezier3.c2));
+        assert(egaux_points(bezier3base.c3, bezier3.c3));
+    }
+
     // n=9 (exemple du cours)
     bezier3 = approx_bezier3(points2, 9);
     int x1e5 = (1.737287 - bezier3.c1.x) * 100000;
