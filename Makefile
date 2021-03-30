@@ -169,7 +169,15 @@ clean:
 test: test_image test_geom2d test_contour
 	./test_geom2d && ./test_image && ./test_contour
 
+FICHIERS_TACHE_6_2 = image_poly_tache6 elephant-gotlib goudyini-A JoaquimHock-LesArbres cheval papillon2
+
 contours: contour_of
+	echo === Simplifications d=1 === > resultats-tache6-2.txt
+	for f in $(FICHIERS_TACHE_6_2); do ./contour_of images/$$f.pbm -c -d 1 -3; mv images/$$f.pbm-mode3.eps images/$$f-3-d1.eps; done >> resultats-tache6-2.txt
+	echo === Simplifications d=2 === >> resultats-tache6-2.txt
+	for f in $(FICHIERS_TACHE_6_2); do ./contour_of images/$$f.pbm -c -d 2 -3; mv images/$$f.pbm-mode3.eps images/$$f-3-d2.eps; done >> resultats-tache6-2.txt
+	echo === Avant simplification === >> resultats-tache6-2.txt
+	for f in $(FICHIERS_TACHE_6_2); do ./contour_of images/$$f.pbm -c; done >> resultats-tache6-2.txt
 	ls -1 images/*.pbm | xargs -L1 -I{} ./contour_of {} -c -3 > resultats-tache3-2.txt
 	./contour_of images/chat.pbm -1 -2
 	./contour_of images/image_ex_poly.pbm -1 -2

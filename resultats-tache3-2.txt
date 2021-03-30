@@ -3,6 +3,7 @@
 1 contour de images/caractere2.pbm enregistré (7x9): 40 segments
 34 contours de images/Charlot.pbm enregistrés (412x1216): 9040 segments
 1 contour de images/chat.pbm enregistré (250x140): 880 segments
+59 contours de images/cheval.pbm enregistrés (2000x1500): 32002 segments
 4 contours de images/cible.pbm enregistrés (7x7): 64 segments
 1 contour de images/coq.pbm enregistré (700x720): 5386 segments
 4 contours de images/damier_4_5_1.pbm enregistrés (4x5): 40 segments
@@ -10,13 +11,17 @@
 38 contours de images/deux-des.pbm enregistrés (595x536): 11124 segments
 1 contour de images/diagonale.pbm enregistré (2x2): 8 segments
 78 contours de images/Droopy_Wolf.pbm enregistrés (821x687): 17306 segments
+313 contours de images/elephant-gotlib.pbm enregistrés (1350x2000): 115564 segments
 1 contour de images/elephant.pbm enregistré (800x700): 5344 segments
 40 contours de images/FranceRegions.pbm enregistrés (1200x1200): 29540 segments
 375 contours de images/gai-luron.pbm enregistrés (1112x1390): 87636 segments
+258 contours de images/goudyini-A.pbm enregistrés (1000x1000): 73444 segments
 1 contour de images/gymnaste.pbm enregistré (1056x1647): 8784 segments
 2 contours de images/image1_poly.pbm enregistrés (4x3): 18 segments
 3 contours de images/image2_poly.pbm enregistrés (7x9): 56 segments
 1 contour de images/image_ex_poly.pbm enregistré (4x4): 18 segments
+3 contours de images/image_poly_tache6.pbm enregistrés (50x50): 488 segments
+543 contours de images/JoaquimHock-LesArbres.pbm enregistrés (1500x2100): 231284 segments
 1 contour de images/labyrinthe.pbm enregistré (221x201): 44000 segments
 1 contour de images/lettreZ.pbm enregistré (600x1029): 9396 segments
 1 contour de images/ligne.pbm enregistré (3x2): 10 segments
