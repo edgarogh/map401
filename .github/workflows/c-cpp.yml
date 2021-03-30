@@ -39,7 +39,7 @@ jobs:
     - run: make distance_points
     - run: make clean
     - name: package
-      run: tar --exclude=.github --exclude=.gitignore --exclude=.git --exclude-from=.gitignore -zcvf map401-$GITHUB_SHA.tar *
+      run: tar --exclude=.github --exclude=.gitignore --exclude=README.md --exclude=gpl-3.0.txt --exclude=.gitattributes --exclude=.git --exclude-from=.gitignore -zcvf map401-$GITHUB_SHA.tar *
     - uses: actions/upload-artifact@v2
       with:
         name: map401-${{ github.sha }}.tar
