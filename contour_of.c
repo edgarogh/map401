@@ -128,7 +128,7 @@ bool generic_contour_is_segment(GenericContour* self) {
 
 unsigned int generic_contour_len(GenericContour* self) {
     if (generic_contour_is_segment(self)) {
-        return self->val.segment.len;
+        return self->val.segment.len - 1;
     } else {
         return self->val.bezier3.len;
     }
@@ -315,7 +315,7 @@ int main(int argc, char** argv) {
         if (f_mode2) generic_contour_ecrire(&generic_contour, eps2_file);
         if (f_mode3) generic_contour_ecrire(&generic_contour, eps3_file);
 
-        segments += (generic_contour_len(&generic_contour) - 1);
+        segments += generic_contour_len(&generic_contour);
 
         if (cb.len > 0) liste_bezier3_supprimer(&cb);
         if (c_tab_dp.len > 0 && c_tab_dp.inner != c_tab.inner) tableau_points_supprimer(&c_tab_dp);
