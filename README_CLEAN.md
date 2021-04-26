@@ -1,18 +1,11 @@
-# MAP401
-
-Projet de vectorisation d'images PBM au format EPS réalisé seul dans le contexte de l'UE de MAP401 à l'UGA.
-
-(PBM to EPS image vectorization project done alone as part of the "MAP401" teaching unit at the Université Grenoble Alpes)
+# MAP401 -- Instructions
 
 ## Téléchargement et compilation
 
 Prérequis:
-  * Un ordinateur
-  * Un système d'exploitation sympa (je recommande [Linux Mint](https://linuxmint.com/) et déconseille Windows et [AnanOS](https://github.com/WartaPoirier-corp/ananos/))
   * `clang` (facilement adaptable à un autre compilateur C)
   * GNU Make
   * (optionnel, pour la gestion des versions) git
-  * (optionnel, ne vous servira strictement à rien pour utiliser ce projet) `rustc` parce que Rust est le meilleur langage de programmation du monde et que vous devriez le pratiquer :crab:
 
 Clonage du dépôt:
 
@@ -57,6 +50,8 @@ EXEMPLES:
     contour_of images/coq.pbm -c -3
     contour_of images/coq.pbm -1
 ```
+
+En résumé: après avoir spécifié le chemin vers l'image, on peut choisir zéro ou un mode de traitement (simplification), et spécifier autant de modes de sortie que l'on veut. Le mode de sortie `-c` permet aussi d'afficher des informations sur le nombre de segments, de courbes, et de contours dans la console.
 
 ## Exécution des tests
 
